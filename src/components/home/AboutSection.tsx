@@ -28,7 +28,7 @@ export default function AboutSection() {
               <ParallaxImage
                 src={artist.images.studio1}
                 alt="WTCHOUT in the studio"
-                className="h-[600px]"
+                className="h-[400px] sm:h-[500px] lg:h-[600px]"
               />
             </RevealOnScroll>
 

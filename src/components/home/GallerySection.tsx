@@ -154,7 +154,7 @@ export default function GallerySection() {
         </div>
 
         {/* Mobile: vertical stack */}
-        <div className="flex flex-col gap-3 md:hidden">
+        <div className="flex flex-col gap-4 md:hidden">
           <div className="mb-8">
             <span
               className="mb-3 block text-xs font-semibold uppercase tracking-[0.3em]"

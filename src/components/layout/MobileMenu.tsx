@@ -78,14 +78,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 <a
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="text-3xl font-light tracking-wide transition-colors"
+                  className="text-3xl font-light tracking-wide transition-colors hover:text-[#ff6b2c] active:text-[#ff6b2c]"
                   style={{ color: "#f5efe6" }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#ff6b2c")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "#f5efe6")
-                  }
                 >
                   {link.label}
                 </a>
@@ -107,14 +101,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium transition-colors"
+                className="text-sm font-medium transition-colors hover:text-[#ff6b2c] active:text-[#ff6b2c]"
                 style={{ color: "#b8a690" }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.color = "#ff6b2c")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.color = "#b8a690")
-                }
                 aria-label={social.name}
               >
                 {social.name}

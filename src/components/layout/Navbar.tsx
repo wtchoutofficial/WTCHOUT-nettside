@@ -90,7 +90,7 @@ export default function Navbar() {
           {/* Menu button */}
           <button
             onClick={() => setMenuOpen(true)}
-            className="px-5 py-2 text-sm font-semibold uppercase tracking-widest transition-colors duration-300"
+            className="px-5 py-2.5 text-sm font-semibold uppercase tracking-widest transition-colors duration-300"
             style={{
               color: "#f5efe6",
               border: "1px solid rgba(245, 239, 230, 0.3)",

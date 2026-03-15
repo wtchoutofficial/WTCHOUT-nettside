@@ -43,6 +43,7 @@ export function ReleaseCard({ release }: ReleaseCardProps) {
               scale: 1.05,
               filter: "hue-rotate(15deg) brightness(1.1)",
             }}
+            whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             <Image

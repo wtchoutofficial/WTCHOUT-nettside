@@ -175,7 +175,7 @@ export default function DualVibes() {
               </span>
 
               <h3
-                className="mt-4 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl"
+                className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
                 style={{ color: "#f5efe6" }}
               >
                 {panel.label}
@@ -214,7 +214,7 @@ export default function DualVibes() {
             {/* Mute/unmute button */}
             <button
               onClick={() => toggleMute(index)}
-              className="absolute bottom-6 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-200"
+              className="absolute bottom-6 right-6 z-20 flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-200"
               style={{
                 backgroundColor: "rgba(10, 10, 15, 0.5)",
                 color: panel.accentColor,

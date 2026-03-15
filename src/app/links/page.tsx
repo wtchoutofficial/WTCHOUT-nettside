@@ -142,18 +142,10 @@ export default function LinksPage() {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200"
+                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 hover:bg-[rgba(245,239,230,0.15)] active:bg-[rgba(245,239,230,0.2)]"
                         style={{
                           backgroundColor: "rgba(245, 239, 230, 0.08)",
                           color: "#f5efe6",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor =
-                            "rgba(245, 239, 230, 0.15)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor =
-                            "rgba(245, 239, 230, 0.08)";
                         }}
                       >
                         {platformIcons[platform.icon]}
@@ -194,16 +186,10 @@ export default function LinksPage() {
                     {...(isExternal
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className="flex items-center gap-3 rounded-xl px-4 py-3.5 transition-colors duration-200"
+                    className="flex items-center gap-3 rounded-xl px-4 py-3.5 transition-colors duration-200 hover:bg-[#352c22] active:bg-[#3d332a]"
                     style={{
                       backgroundColor: "#2a2118",
                       color: "#f5efe6",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#352c22";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#2a2118";
                     }}
                   >
                     <span style={{ color: "#ff6b2c" }}>

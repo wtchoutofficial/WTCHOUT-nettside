@@ -16,7 +16,7 @@ export function SpotifyEmbed({ spotifyUrl }: SpotifyEmbedProps) {
       <iframe
         src={toEmbedUrl(spotifyUrl)}
         width="100%"
-        height="352"
+        height="152"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
         className="rounded-lg"

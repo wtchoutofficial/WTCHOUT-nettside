@@ -29,7 +29,7 @@ const eventTypes = [
 ];
 
 const inputStyles =
-  "w-full rounded-lg px-4 py-3 text-sm outline-none transition-all duration-200 placeholder:text-[#b8a690]/50";
+  "w-full rounded-lg px-4 py-3.5 text-sm outline-none transition-all duration-200 placeholder:text-[#b8a690]/50";
 
 const inputTheme = {
   backgroundColor: "#2a2118",

@@ -136,7 +136,7 @@ export default function MusicSection() {
   return (
     <section
       id="music"
-      className="relative overflow-hidden px-6 py-24 sm:px-12 lg:px-24"
+      className="relative overflow-hidden px-6 py-16 sm:py-24 sm:px-12 lg:px-24"
       style={{ backgroundColor: "#1a1410" }}
     >
       {/* Floating glow orb */}
@@ -168,7 +168,7 @@ export default function MusicSection() {
 
         {/* Stats row */}
         <RevealOnScroll delay={0.1}>
-          <div className="mb-16 flex items-center justify-center gap-12 sm:gap-20">
+          <div className="mb-16 flex items-center justify-center gap-6 sm:gap-12 md:gap-20">
             {artistStats.map((stat, i) => (
               <AnimatedStat
                 key={stat.label}
