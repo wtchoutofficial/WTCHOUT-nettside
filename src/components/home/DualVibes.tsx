@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 import { GlitchText } from "@/components/ui/GlitchText";
@@ -50,6 +50,10 @@ export default function DualVibes() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const sectionRef = useRef<HTMLElement | null>(null);
   const [mutedState, setMutedState] = useState<boolean[]>([true, true]);
+  const isMobile = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth < 768;
+  }, []);
 
   const toggleMute = useCallback(
     (index: number) => {
@@ -130,18 +134,20 @@ export default function DualVibes() {
             className="relative flex min-h-[60vh] items-center justify-center overflow-hidden md:min-h-screen"
             style={{ backgroundColor: panel.bgColor }}
           >
-            {/* Video background */}
-            <video
-              ref={(el) => {
-                videoRefs.current[index] = el;
-              }}
-              autoPlay
-              muted
-              loop
-              playsInline
-              src={panel.video}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            {/* Video background — hidden on mobile for performance */}
+            {!isMobile && (
+              <video
+                ref={(el) => {
+                  videoRefs.current[index] = el;
+                }}
+                autoPlay
+                muted
+                loop
+                playsInline
+                src={panel.video}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            )}
 
             {/* Gradient overlay */}
             <div

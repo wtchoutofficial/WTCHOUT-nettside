@@ -14,6 +14,9 @@ const noiseStyles = `
   90% { transform: translate(10%, 5%); }
   100% { transform: translate(5%, 0); }
 }
+@media (max-width: 768px) {
+  .noise-layer { display: none !important; }
+}
 `;
 
 export function NoiseOverlay() {
@@ -21,7 +24,7 @@ export function NoiseOverlay() {
     <>
       <style>{noiseStyles}</style>
       <div
-        className="pointer-events-none fixed inset-0 z-50 opacity-[0.03]"
+        className="noise-layer pointer-events-none fixed inset-0 z-50 opacity-[0.03]"
         aria-hidden="true"
       >
         <svg className="hidden">
