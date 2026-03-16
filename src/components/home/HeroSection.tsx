@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { GlitchText } from "@/components/ui/GlitchText";
 import ListenNowModal from "@/components/home/ListenNowModal";
+
 import { releases } from "@/data/releases";
 
 export default function HeroSection() {
@@ -29,7 +30,6 @@ export default function HeroSection() {
             "linear-gradient(to top, #1a1410 0%, #1a1410cc 30%, transparent 60%)",
         }}
       />
-
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center gap-6 px-4 text-center">
         <motion.div
@@ -39,7 +39,7 @@ export default function HeroSection() {
         >
           <GlitchText
             text="WTCHOUT"
-            className="text-7xl font-bold tracking-widest sm:text-8xl md:text-9xl"
+            className="text-5xl font-bold tracking-widest sm:text-7xl md:text-8xl lg:text-9xl"
             style={{ color: "#f5efe6", textShadow: "0 2px 40px rgba(0,0,0,0.5)" }}
           />
         </motion.div>

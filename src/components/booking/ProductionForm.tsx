@@ -6,25 +6,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 
-export const bookingSchema = z.object({
+export const productionSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().optional(),
-  eventType: z.string().min(1, "Please select an event type"),
-  date: z.string().min(1, "Date is required"),
-  venue: z.string().min(1, "Venue is required"),
+  artistName: z.string().optional(),
+  type: z.string().min(1, "Please select a type"),
+  description: z.string().min(10, "Description must be at least 10 characters"),
+  musicLink: z.string().optional(),
   budget: z.string().optional(),
-  details: z.string().min(10, "Details must be at least 10 characters"),
-  whyFit: z.string().optional(),
 });
 
-export type BookingFormData = z.infer<typeof bookingSchema>;
+export type ProductionFormData = z.infer<typeof productionSchema>;
 
-const eventTypes = [
-  "Festival",
-  "Club night",
-  "Beach club / Pool party",
-  "Private event",
+const productionTypes = [
+  "Collaboration",
+  "Buy a beat",
+  "Production help",
   "Other",
 ];
 
@@ -39,7 +36,7 @@ const inputTheme = {
   color: "#f5efe6",
 };
 
-export default function BookingForm() {
+export default function ProductionForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -48,11 +45,11 @@ export default function BookingForm() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<BookingFormData>({
-    resolver: zodResolver(bookingSchema),
+  } = useForm<ProductionFormData>({
+    resolver: zodResolver(productionSchema),
   });
 
-  const onSubmit = async (data: BookingFormData) => {
+  const onSubmit = async (data: ProductionFormData) => {
     setStatus("loading");
     setErrorMessage("");
 
@@ -60,7 +57,7 @@ export default function BookingForm() {
       const res = await fetch("/api/booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, category: "booking" }),
+        body: JSON.stringify({ ...data, category: "production" }),
       });
 
       if (!res.ok) {
@@ -86,7 +83,7 @@ export default function BookingForm() {
           Thanks for reaching out!
         </h3>
         <p style={{ color: "#b8a690" }}>
-          If the vibe is right, you&apos;ll hear from me soon.
+          I&apos;ll get back to you about this soon.
         </p>
       </div>
     );
@@ -113,9 +110,7 @@ export default function BookingForm() {
           }}
         />
         {errors.name && (
-          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>
-            {errors.name.message}
-          </p>
+          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>{errors.name.message}</p>
         )}
       </div>
 
@@ -139,21 +134,18 @@ export default function BookingForm() {
           }}
         />
         {errors.email && (
-          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>
-            {errors.email.message}
-          </p>
+          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>{errors.email.message}</p>
         )}
       </div>
 
-      {/* Phone */}
+      {/* Artist name */}
       <div>
         <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
-          Phone
+          Artist name
         </label>
         <input
-          {...register("phone")}
-          type="tel"
-          placeholder="+47 xxx xx xxx"
+          {...register("artistName")}
+          placeholder="Your artist/stage name"
           className={inputStyles}
           style={inputTheme}
           onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
@@ -161,90 +153,71 @@ export default function BookingForm() {
         />
       </div>
 
-      {/* Event type */}
+      {/* Type */}
       <div>
         <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
-          Event type *
+          Type *
         </label>
         <select
-          {...register("eventType")}
+          {...register("type")}
           className={inputStyles}
           style={{
             ...inputTheme,
-            boxShadow: errors.eventType ? "0 0 0 2px #ff6b2c" : "none",
+            boxShadow: errors.type ? "0 0 0 2px #ff6b2c" : "none",
           }}
           defaultValue=""
           onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
           onBlur={(e) => {
-            if (!errors.eventType) e.currentTarget.style.boxShadow = "none";
+            if (!errors.type) e.currentTarget.style.boxShadow = "none";
           }}
         >
-          <option value="" disabled>
-            Select type...
-          </option>
-          {eventTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
+          <option value="" disabled>Select type...</option>
+          {productionTypes.map((type) => (
+            <option key={type} value={type}>{type}</option>
           ))}
         </select>
-        {errors.eventType && (
-          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>
-            {errors.eventType.message}
-          </p>
+        {errors.type && (
+          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>{errors.type.message}</p>
         )}
       </div>
 
-      {/* Date and Venue */}
-      <div className="grid gap-6 sm:grid-cols-2">
-        <div>
-          <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
-            Date *
-          </label>
-          <input
-            {...register("date")}
-            type="date"
-            className={inputStyles}
-            style={{
-              ...inputTheme,
-              colorScheme: "dark",
-              boxShadow: errors.date ? "0 0 0 2px #ff6b2c" : "none",
-            }}
-            onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
-            onBlur={(e) => {
-              if (!errors.date) e.currentTarget.style.boxShadow = "none";
-            }}
-          />
-          {errors.date && (
-            <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>
-              {errors.date.message}
-            </p>
-          )}
-        </div>
+      {/* Description */}
+      <div>
+        <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
+          Describe the project *
+        </label>
+        <textarea
+          {...register("description")}
+          placeholder="Tell me about what you have in mind..."
+          rows={4}
+          className={`${inputStyles} resize-y`}
+          style={{
+            ...inputTheme,
+            boxShadow: errors.description ? "0 0 0 2px #ff6b2c" : "none",
+          }}
+          onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
+          onBlur={(e) => {
+            if (!errors.description) e.currentTarget.style.boxShadow = "none";
+          }}
+        />
+        {errors.description && (
+          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>{errors.description.message}</p>
+        )}
+      </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
-            Venue *
-          </label>
-          <input
-            {...register("venue")}
-            placeholder="e.g. Ushuaia, Ibiza"
-            className={inputStyles}
-            style={{
-              ...inputTheme,
-              boxShadow: errors.venue ? "0 0 0 2px #ff6b2c" : "none",
-            }}
-            onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
-            onBlur={(e) => {
-              if (!errors.venue) e.currentTarget.style.boxShadow = "none";
-            }}
-          />
-          {errors.venue && (
-            <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>
-              {errors.venue.message}
-            </p>
-          )}
-        </div>
+      {/* Music link */}
+      <div>
+        <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
+          Link to your music
+        </label>
+        <input
+          {...register("musicLink")}
+          placeholder="Spotify, SoundCloud, etc."
+          className={inputStyles}
+          style={inputTheme}
+          onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
+          onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
+        />
       </div>
 
       {/* Budget */}
@@ -254,7 +227,7 @@ export default function BookingForm() {
         </label>
         <input
           {...register("budget")}
-          placeholder="e.g. 20,000 - 50,000 NOK"
+          placeholder="e.g. 5,000 - 15,000 NOK"
           className={inputStyles}
           style={inputTheme}
           onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
@@ -262,49 +235,7 @@ export default function BookingForm() {
         />
       </div>
 
-      {/* Details */}
-      <div>
-        <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
-          Details *
-        </label>
-        <textarea
-          {...register("details")}
-          placeholder="Tell us more about the event..."
-          rows={4}
-          className={`${inputStyles} resize-y`}
-          style={{
-            ...inputTheme,
-            boxShadow: errors.details ? "0 0 0 2px #ff6b2c" : "none",
-          }}
-          onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
-          onBlur={(e) => {
-            if (!errors.details) e.currentTarget.style.boxShadow = "none";
-          }}
-        />
-        {errors.details && (
-          <p className="mt-1 text-xs" style={{ color: "#ff6b2c" }}>
-            {errors.details.message}
-          </p>
-        )}
-      </div>
-
-      {/* Why is this a good fit */}
-      <div>
-        <label className="mb-2 block text-sm font-medium" style={{ color: "#d4a574" }}>
-          Why is this a good fit for WTCHOUT? (optional)
-        </label>
-        <textarea
-          {...register("whyFit")}
-          placeholder="What makes this event a match for WTCHOUT's sound?"
-          rows={3}
-          className={`${inputStyles} resize-y`}
-          style={inputTheme}
-          onFocus={(e) => (e.currentTarget.style.boxShadow = "0 0 0 2px #ff6b2c")}
-          onBlur={(e) => (e.currentTarget.style.boxShadow = "none")}
-        />
-      </div>
-
-      {/* Error message */}
+      {/* Error */}
       {status === "error" && (
         <div
           className="rounded-lg px-4 py-3 text-sm"

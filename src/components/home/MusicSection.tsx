@@ -141,7 +141,7 @@ export default function MusicSection() {
     >
       {/* Floating glow orb */}
       <motion.div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/3 h-[80vw] max-h-[500px] w-[80vw] max-w-[500px] -translate-x-1/2 rounded-full blur-3xl"
         style={{
           background: "radial-gradient(circle, rgba(255,107,44,0.08), transparent)",
         }}
