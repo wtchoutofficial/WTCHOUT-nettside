@@ -77,6 +77,14 @@ export default function RootLayout({
           as="video"
           href="/videos/sora-jungle.mp4"
           type="video/mp4"
+          media="(min-width: 901px)"
+        />
+        <link
+          rel="preload"
+          as="video"
+          href="/videos/sora-jungle-mobile.mp4"
+          type="video/mp4"
+          media="(max-width: 900px)"
         />
         <link
           rel="preload"

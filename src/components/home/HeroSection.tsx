@@ -9,6 +9,15 @@ export default function HeroSection() {
   const tintRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 900px), (pointer: coarse)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -24,9 +33,11 @@ export default function HeroSection() {
       if (videoReady) return;
       videoReady = true;
       setLoaded(true);
-      try {
-        video.pause();
-      } catch {}
+      if (!isMobile) {
+        try {
+          video.pause();
+        } catch {}
+      }
     };
     video.addEventListener("loadedmetadata", onReady, { once: true });
     video.addEventListener("loadeddata", onReady, { once: true });
@@ -35,6 +46,55 @@ export default function HeroSection() {
     try {
       video.load();
     } catch {}
+
+    // Mobile: seek-only scroll-scrub. The mobile video is encoded all-keyframes
+    // so currentTime seeks are instant — no decode-from-keyframe latency.
+    // No velocity-based playback (iOS Safari handles play rate poorly mid-scroll).
+    if (isMobile) {
+      try {
+        video.pause();
+      } catch {}
+
+      let raf = 0;
+      let pending = false;
+      const tick = () => {
+        const rect = hero.getBoundingClientRect();
+        const total = hero.offsetHeight - window.innerHeight;
+        const p = Math.max(0, Math.min(1, -rect.top / total));
+
+        if (videoReady && video.duration && pending) {
+          const target = video.duration * p;
+          if (Math.abs(video.currentTime - target) > 0.03) {
+            try {
+              video.currentTime = target;
+            } catch {}
+          }
+          pending = false;
+        }
+
+        if (titleRef.current) {
+          titleRef.current.style.transform = `translate(-50%, -50%) scale(${1 - p * 0.18})`;
+        }
+        if (tintRef.current) {
+          tintRef.current.style.opacity = String(Math.max(0, 1 - p * 1.3));
+        }
+        if (hintRef.current) {
+          hintRef.current.style.opacity = String(Math.max(0, 1 - p * 6));
+        }
+        raf = requestAnimationFrame(tick);
+      };
+
+      const onScrollMobile = () => {
+        pending = true;
+      };
+
+      raf = requestAnimationFrame(tick);
+      window.addEventListener("scroll", onScrollMobile, { passive: true });
+      return () => {
+        cancelAnimationFrame(raf);
+        window.removeEventListener("scroll", onScrollMobile);
+      };
+    }
 
     const computeProgress = () => {
       const rect = hero.getBoundingClientRect();
@@ -129,7 +189,7 @@ export default function HeroSection() {
       window.removeEventListener("scroll", onScroll);
       if (pausedTimer) clearTimeout(pausedTimer);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -157,7 +217,7 @@ export default function HeroSection() {
       >
         <video
           ref={videoRef}
-          src="/videos/sora-jungle.mp4"
+          src={isMobile ? "/videos/sora-jungle-mobile.mp4" : "/videos/sora-jungle.mp4"}
           muted
           playsInline
           preload="auto"

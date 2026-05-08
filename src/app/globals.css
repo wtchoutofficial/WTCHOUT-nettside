@@ -68,7 +68,7 @@ body {
 }
 
 /* ============ Mobile hero shorter scroll ============ */
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .hero-section {
     height: 200vh !important;
     min-height: 200vh !important;

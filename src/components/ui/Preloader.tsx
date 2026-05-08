@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const CRITICAL_ASSETS = [
-  "/videos/sora-jungle.mp4",
+const SHARED_ASSETS = [
   "/images/about/portrait.jpg",
   "/images/upcoming/dusk-to-dawn.jpg",
   "/images/branding/w-logo.png",
@@ -17,7 +16,10 @@ export default function Preloader() {
   useEffect(() => {
     let cancelled = false;
     let loaded = 0;
-    const total = CRITICAL_ASSETS.length + 1; // +1 for fonts.ready
+    const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+    const heroVideo = isMobile ? "/videos/sora-jungle-mobile.mp4" : "/videos/sora-jungle.mp4";
+    const assets = [heroVideo, ...SHARED_ASSETS];
+    const total = assets.length + 1; // +1 for fonts.ready
 
     const tick = () => {
       loaded += 1;
@@ -38,7 +40,7 @@ export default function Preloader() {
 
     document.fonts?.ready.then(tick).catch(tick);
 
-    CRITICAL_ASSETS.forEach((src) => {
+    assets.forEach((src) => {
       if (src.endsWith(".mp4")) {
         const v = document.createElement("video");
         v.preload = "auto";
