@@ -1,113 +1,464 @@
-"use client";
-
-import { artist } from "@/data/artist";
-import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
-import { ParallaxImage } from "@/components/ui/ParallaxImage";
-
 export default function AboutSection() {
   return (
-    <section id="about" className="relative">
-      {/* Top gradient: dark → light */}
-      <div
-        className="absolute top-0 left-0 right-0 h-32 -z-0"
-        style={{
-          background: "linear-gradient(to bottom, #1a1410, #f5efe6)",
-        }}
-      />
+    <section
+      id="about"
+      style={{
+        background: "var(--jungle-floor)",
+        padding: "140px 24px 160px",
+      }}
+    >
+      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
+        <div className="reveal about-intro" style={{ marginBottom: "120px" }}>
+          <div className="about-editorial">
+            <h2
+              className="about-title"
+              style={{
+                fontFamily: "var(--font-anton), sans-serif",
+                fontSize: "clamp(48px, 7vw, 120px)",
+                lineHeight: 0.9,
+                letterSpacing: "-0.04em",
+                textTransform: "uppercase",
+                color: "var(--bone)",
+                margin: 0,
+              }}
+            >
+              The artist{" "}
+              <em
+                style={{
+                  fontFamily: "var(--font-instrument-serif), serif",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  color: "var(--neon-lime)",
+                }}
+              >
+                behind
+              </em>
+              <br />
+              the sound
+            </h2>
 
-      {/* Main content */}
-      <div
-        className="relative px-6 pt-32 pb-32 sm:px-12 lg:px-24"
-        style={{ backgroundColor: "#f5efe6" }}
-      >
-        <div className="mx-auto max-w-6xl">
-          {/* Two column layout */}
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-            {/* Left: stacked images */}
-            <RevealOnScroll direction="left">
-              <ParallaxImage
-                src={artist.images.studio1}
-                alt="WTCHOUT in the studio"
-                className="h-[400px] sm:h-[500px] lg:h-[600px]"
-              />
-            </RevealOnScroll>
-
-            {/* Right: bio text */}
-            <div className="flex flex-col justify-center">
-              <RevealOnScroll>
+            <div className="about-bio">
+              <div
+                style={{
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: "var(--neon-lime)",
+                  marginBottom: "24px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "16px",
+                }}
+              >
                 <span
-                  className="mb-3 block text-xs font-semibold uppercase tracking-[0.3em]"
-                  style={{ color: "#ff6b2c" }}
-                >
-                  About
-                </span>
-                <h2
-                  className="mb-8 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
-                  style={{ color: "#1a1410" }}
-                >
-                  {artist.name}
-                </h2>
-              </RevealOnScroll>
-
-              {artist.bio.map((paragraph, i) => (
-                <RevealOnScroll key={i} delay={0.1 * (i + 1)}>
-                  <p
-                    className="mb-6 text-base leading-relaxed"
-                    style={{ color: "#5a4030" }}
-                  >
-                    {paragraph}
-                  </p>
-                </RevealOnScroll>
-              ))}
-
-              {/* Pull quote */}
-              <RevealOnScroll delay={0.4}>
-                <blockquote
-                  className="my-8 py-4 pl-6 text-xl font-light italic leading-relaxed sm:text-2xl"
                   style={{
-                    color: "#1a1410",
-                    borderLeftWidth: "3px",
-                    borderLeftStyle: "solid",
-                    borderLeftColor: "#ff6b2c",
+                    width: "32px",
+                    height: "1px",
+                    background: "var(--neon-lime)",
+                    display: "inline-block",
+                  }}
+                />
+                — Bio / Hustadvika, NO
+              </div>
+              <p
+                style={{
+                  fontFamily: "var(--font-bricolage), sans-serif",
+                  fontSize: "18px",
+                  lineHeight: 1.6,
+                  color: "var(--bone-dim)",
+                  marginBottom: "24px",
+                }}
+              >
+                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>
+                  Oscar André Naas
+                </strong>{" "}
+                — known as WTCHOUT — is a 25-year-old producer and DJ from Hustadvika,
+                Norway. He picked up the guitar as a teenager, taught himself music
+                production at 15, and never looked back — diving deep into FL Studio
+                and Ableton to craft his own sound.
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-bricolage), sans-serif",
+                  fontSize: "18px",
+                  lineHeight: 1.6,
+                  color: "var(--bone-dim)",
+                  marginBottom: "24px",
+                }}
+              >
+                WTCHOUT operates on two wavelengths.{" "}
+                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>Dusk</strong>{" "}
+                is the warm, golden side — house, Ibiza vibes, afro, minimal, rally
+                house.{" "}
+                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>Dawn</strong>{" "}
+                is where things get raw — hard house, UK garage, techno, hard techno,
+                drum &amp; bass.
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-bricolage), sans-serif",
+                  fontSize: "18px",
+                  lineHeight: 1.6,
+                  color: "var(--bone-dim)",
+                }}
+              >
+                Anti-mainstream by nature. No formulas, no trends — just music that hits
+                right.
+              </p>
+            </div>
+
+            <figure
+              className="about-portrait"
+              style={{
+                position: "relative",
+                margin: 0,
+                width: "100%",
+                maxWidth: "560px",
+                aspectRatio: "4/5",
+                overflow: "hidden",
+                justifySelf: "end",
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/about/portrait.jpg"
+                alt="WTCHOUT — Oscar André Naas"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                  filter: "saturate(0.95) contrast(1.05)",
+                }}
+              />
+              <span
+                style={{
+                  position: "absolute",
+                  top: "16px",
+                  left: "16px",
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  color: "var(--neon-lime)",
+                  background: "rgba(5,13,8,0.55)",
+                  padding: "6px 10px",
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                — Portrait / 001
+              </span>
+              <figcaption
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  padding: "20px 20px 18px",
+                  background:
+                    "linear-gradient(180deg, transparent 0%, rgba(5,13,8,0.85) 70%)",
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: "10px",
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  color: "var(--bone)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                }}
+              >
+                <span>Oscar André Naas</span>
+                <span style={{ color: "var(--bone-dim)" }}>62.9°N · 7.2°E</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div
+          className="reveal"
+          style={{
+            borderTop: "1px solid rgba(245,240,232,0.15)",
+            borderBottom: "1px solid rgba(245,240,232,0.15)",
+            padding: "60px 0",
+            textAlign: "center",
+            marginBottom: "120px",
+          }}
+        >
+          <q
+            style={{
+              fontFamily: "var(--font-instrument-serif), serif",
+              fontStyle: "italic",
+              fontSize: "clamp(28px, 4vw, 56px)",
+              color: "var(--bone)",
+              lineHeight: 1.15,
+            }}
+          >
+            I don&apos;t chase every gig — only the ones that feel right.
+          </q>
+          <div
+            style={{
+              marginTop: "24px",
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: "11px",
+              letterSpacing: "0.3em",
+              textTransform: "uppercase",
+              color: "var(--bone-dim)",
+            }}
+          >
+            — WTCHOUT
+          </div>
+        </div>
+
+        <div
+          className="reveal stats-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "24px",
+            marginBottom: "120px",
+          }}
+        >
+          {[
+            { v: "'19", em: "—", l: "Established" },
+            { v: "15", em: "yo", l: "Producing since" },
+            { v: "2", em: "×", l: "Sides — Dusk & Dawn" },
+            { v: "62.9", em: "°N", l: "Hustadvika, Norway" },
+          ].map((s) => (
+            <div
+              key={s.l}
+              style={{
+                borderLeft: "1px solid rgba(245,240,232,0.15)",
+                padding: "12px 0 12px 24px",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-anton), sans-serif",
+                  fontSize: "clamp(40px, 5vw, 80px)",
+                  lineHeight: 0.95,
+                  color: "var(--bone)",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {s.v}
+                <em
+                  style={{
+                    fontFamily: "var(--font-instrument-serif), serif",
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    color: "var(--neon-lime)",
                   }}
                 >
-                  &ldquo;{artist.quote}&rdquo;
-                </blockquote>
-              </RevealOnScroll>
-
-              {/* Stats grid */}
-              <RevealOnScroll delay={0.5}>
-                <div className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-4">
-                  {artist.highlights.map((stat) => (
-                    <div key={stat.label}>
-                      <p
-                        className="text-xs font-semibold uppercase tracking-widest"
-                        style={{ color: "#ff6b2c" }}
-                      >
-                        {stat.label}
-                      </p>
-                      <p
-                        className="mt-1 text-sm font-medium"
-                        style={{ color: "#1a1410" }}
-                      >
-                        {stat.value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </RevealOnScroll>
+                  {s.em}
+                </em>
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "var(--bone-dim)",
+                  marginTop: "8px",
+                }}
+              >
+                {s.l}
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
+
+        <div
+          className="reveal two-sides"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr)",
+            gap: 0,
+            border: "1px solid rgba(245,240,232,0.15)",
+          }}
+        >
+          <SidePanel kind="dusk" />
+          <SidePanel kind="dawn" />
         </div>
       </div>
 
-      {/* Bottom gradient: light → dark */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 -z-0"
+      <style>{`
+        .about-editorial {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 48px;
+          align-items: start;
+        }
+        .about-title { grid-area: title; }
+        .about-bio { grid-area: bio; }
+        .about-portrait { grid-area: portrait; }
+        @media (min-width: 800px) {
+          .about-editorial {
+            grid-template-columns: 1fr 0.9fr;
+            grid-template-areas:
+              "title    portrait"
+              "bio      portrait";
+            grid-template-rows: auto 1fr;
+            row-gap: 64px;
+            column-gap: 80px;
+            align-items: start;
+          }
+          .stats-grid { grid-template-columns: repeat(4, 1fr) !important; }
+          .two-sides { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
+function SidePanel({ kind }: { kind: "dusk" | "dawn" }) {
+  const cfg = {
+    dusk: {
+      tag: "— The warm side",
+      title: "Dusk",
+      copy:
+        "Sunsets, golden tones and groovy rhythms. Dusk is the sound of late summer evenings — house, disco and melodies that make you stay a little longer.",
+      genres: ["House", "Disco", "Afro", "Minimal", "Rally House"],
+      titleColor: "var(--gold)",
+      borderRight: true,
+      // Image is mirrored via scaleX(-1). To show parrot (originally on right of image),
+      // anchor object-position to RIGHT — after flip it appears at left of panel.
+      objectPosition: "right center",
+      flip: true,
+      overlay:
+        "linear-gradient(160deg, rgba(42,20,8,0.35) 0%, rgba(26,10,5,0.72) 65%, rgba(15,6,3,0.92) 100%)",
+      // Mirror of dawn's fade — black out the tiger/owl bleed on the right side
+      sideFade:
+        "linear-gradient(to left, #1a0a05 0%, #1a0a05 35%, rgba(26,10,5,0.7) 60%, transparent 90%)",
+    },
+    dawn: {
+      tag: "— The dark side",
+      title: "Dawn",
+      copy:
+        "When the lights go out and the bass takes over. Dawn is the raw and unknown — underground techno, deep frequencies and nights that never end.",
+      genres: ["Hard House", "UK Garage", "Techno", "Hard Techno", "D&B"],
+      titleColor: "var(--neon-lime)",
+      borderRight: false,
+      // Mirrored back; owl/tiger eye sits on the right of the panel.
+      objectPosition: "left center",
+      flip: true,
+      overlay:
+        "linear-gradient(160deg, rgba(10,26,15,0.5) 0%, rgba(5,13,8,0.82) 65%, rgba(2,6,3,0.95) 100%)",
+      // Extra fade: black out the parrot bleed on the left side of the dawn panel.
+      sideFade:
+        "linear-gradient(to right, var(--jungle-deep) 0%, var(--jungle-deep) 35%, rgba(5,13,8,0.7) 60%, transparent 90%)",
+    },
+  }[kind];
+
+  return (
+    <div
+      className={`side-${kind}`}
+      style={{
+        padding: "60px 32px",
+        position: "relative",
+        overflow: "hidden",
+        minHeight: "520px",
+        background: "var(--jungle-deep)",
+        borderRight: cfg.borderRight ? "1px solid rgba(245,240,232,0.1)" : undefined,
+      }}
+    >
+      {/* Mirrored image — parrot on dusk side, tiger eye on dawn side */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/upcoming/dusk-to-dawn.png"
+        alt=""
+        aria-hidden="true"
         style={{
-          background: "linear-gradient(to bottom, #f5efe6, #1a1410)",
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: cfg.objectPosition,
+          transform: cfg.flip ? "scaleX(-1)" : undefined,
+          pointerEvents: "none",
         }}
       />
-    </section>
+      {/* Side fade — masks out bleed from the other half */}
+      {cfg.sideFade && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: cfg.sideFade,
+            pointerEvents: "none",
+          }}
+        />
+      )}
+      {/* Gradient overlay for legibility */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: cfg.overlay,
+          pointerEvents: "none",
+        }}
+      />
+      <div style={{ position: "relative", zIndex: 1 }}>
+      <div
+        style={{
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "11px",
+          letterSpacing: "0.3em",
+          textTransform: "uppercase",
+          color: "var(--bone-dim)",
+          marginBottom: "16px",
+        }}
+      >
+        {cfg.tag}
+      </div>
+      <h3
+        style={{
+          fontFamily: "var(--font-anton), sans-serif",
+          fontSize: "clamp(80px, 10vw, 160px)",
+          lineHeight: 1,
+          letterSpacing: "-0.03em",
+          textTransform: "uppercase",
+          marginBottom: "24px",
+          color: cfg.titleColor,
+        }}
+      >
+        {cfg.title}
+      </h3>
+      <p
+        style={{
+          fontFamily: "var(--font-bricolage), sans-serif",
+          fontSize: "17px",
+          lineHeight: 1.55,
+          color: "var(--bone-dim)",
+          marginBottom: "32px",
+          maxWidth: "420px",
+        }}
+      >
+        {cfg.copy}
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+        {cfg.genres.map((g) => (
+          <span
+            key={g}
+            className="genre-pill"
+            style={{
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: "11px",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              padding: "8px 14px",
+              border: "1px solid rgba(245,240,232,0.25)",
+              color: "var(--bone)",
+              transition: "all .25s",
+            }}
+          >
+            {g}
+          </span>
+        ))}
+      </div>
+      </div>
+    </div>
   );
 }

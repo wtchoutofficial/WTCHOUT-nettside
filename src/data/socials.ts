@@ -27,7 +27,7 @@ export const socials: SocialLink[] = [
   },
 ];
 
-export const contactEmail = "wtchoutofficial@gmail.com";
+export const contactEmail = "wtchoutmusic@gmail.com";
 
 export interface LinkItem {
   name: string;
@@ -57,7 +57,7 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "SoundCloud",
-        url: "https://soundcloud.com/wtchout",
+        url: "https://soundcloud.com/wtchoutofficial",
         icon: "soundcloud",
       },
       {
@@ -101,7 +101,7 @@ export const linkGroups: LinkGroup[] = [
     title: "Contact",
     items: [
       { name: "Booking", url: "/#booking", icon: "mail" },
-      { name: "Email", url: "mailto:wtchoutofficial@gmail.com", icon: "mail" },
+      { name: "Email", url: "mailto:wtchoutmusic@gmail.com", icon: "mail" },
     ],
   },
 ];

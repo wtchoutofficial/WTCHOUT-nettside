@@ -1,118 +1,150 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import MobileMenu from "./MobileMenu";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const links = [
+  { href: "#releases", id: "releases", label: "Releases" },
+  { href: "#coming", id: "coming", label: "Coming" },
+  { href: "#about", id: "about", label: "About" },
+  { href: "#gallery", id: "gallery", label: "Gallery" },
+  { href: "#tour", id: "tour", label: "Live" },
+  { href: "#booking", id: "booking", label: "Booking" },
+];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState<string>("hero");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const ids = ["hero", ...links.map((l) => l.id)];
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (!sections.length) return;
 
-  const pathname = usePathname();
-  const isHome = pathname === "/";
+    const compute = () => {
+      // Pick the section whose midpoint is closest to viewport top + 30%.
+      const anchor = window.scrollY + window.innerHeight * 0.3;
+      let bestId = sections[0].id;
+      let bestDist = Infinity;
+      for (const s of sections) {
+        const top = s.offsetTop;
+        const bottom = top + s.offsetHeight;
+        if (anchor >= top && anchor < bottom) {
+          bestId = s.id;
+          bestDist = 0;
+          break;
+        }
+        const dist = Math.min(Math.abs(anchor - top), Math.abs(anchor - bottom));
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestId = s.id;
+        }
+      }
+      setActiveId((cur) => (cur === bestId ? cur : bestId));
+    };
+
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
 
   return (
     <>
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 z-40 transition-all duration-500"
+      <nav
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 py-5 md:px-8"
         style={{
-          backgroundColor: scrolled
-            ? "rgba(26, 20, 16, 0.9)"
-            : "transparent",
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+          fontFamily: "var(--font-jetbrains), monospace",
+          fontSize: "12px",
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          mixBlendMode: "difference",
+          color: "var(--bone)",
         }}
       >
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          {/* Logo */}
-          {isHome ? (
+        <Link href="/#hero" className="flex items-center gap-2.5 font-bold">
+          <Image
+            src="/images/branding/w-logo.png"
+            alt="WTCHOUT"
+            width={22}
+            height={22}
+            style={{ filter: "brightness(0) invert(1)", height: "22px", width: "auto" }}
+          />
+          <span>WTCHOUT</span>
+        </Link>
+
+        <div className="hidden lg:flex gap-7">
+          {links.map((l) => (
             <a
-              href="#hero"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="font-bold tracking-widest text-lg transition-colors duration-300"
-              style={{ color: "#f5efe6" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#ff6b2c";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#f5efe6";
-              }}
+              key={l.href}
+              href={l.href}
+              className={`nav-link${activeId === l.id ? " is-active" : ""}`}
             >
-              <Image
-                src="/images/branding/w-logo.png"
-                alt="WTCHOUT logo"
-                width={28}
-                height={28}
-                className="inline-block mr-2"
-              />
-              WTCHOUT
+              {l.label}
             </a>
-          ) : (
-            <Link
-              href="/"
-              className="font-bold tracking-widest text-lg transition-colors duration-300"
-              style={{ color: "#f5efe6" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#ff6b2c";
+          ))}
+        </div>
+
+        <div className="hidden md:flex items-center gap-4">
+          <span className="flex items-center gap-2">
+            <span
+              className="inline-block w-1.5 h-1.5 rounded-full"
+              style={{
+                background: "var(--neon-lime)",
+                boxShadow: "0 0 10px var(--neon-lime)",
+                animation: "wtc-pulse 1.4s ease-in-out infinite",
               }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#f5efe6";
+            />
+            EST 2019 · NORWAY
+          </span>
+        </div>
+
+        <button
+          className="lg:hidden"
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Toggle menu"
+          style={{ color: "var(--bone)" }}
+        >
+          {open ? "Close" : "Menu"}
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      {open && (
+        <div
+          className="fixed inset-0 z-[99] lg:hidden flex flex-col items-center justify-center gap-6"
+          style={{
+            background: "rgba(5, 13, 8, 0.97)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+          }}
+        >
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={() => setOpen(false)}
+              style={{
+                fontFamily: "var(--font-anton), sans-serif",
+                fontSize: "44px",
+                lineHeight: 0.9,
+                textTransform: "uppercase",
+                letterSpacing: "-0.02em",
+                color: "var(--bone)",
               }}
             >
-              <Image
-                src="/images/branding/w-logo.png"
-                alt="WTCHOUT logo"
-                width={28}
-                height={28}
-                className="inline-block mr-2"
-              />
-              WTCHOUT
-            </Link>
-          )}
+              {l.label}
+            </a>
+          ))}
+        </div>
+      )}
 
-          {/* Menu button */}
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="px-5 py-2.5 text-sm font-semibold uppercase tracking-widest transition-colors duration-300"
-            style={{
-              color: "#f5efe6",
-              border: "1px solid rgba(245, 239, 230, 0.3)",
-              borderRadius: "4px",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#ff6b2c";
-              e.currentTarget.style.color = "#ff6b2c";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(245, 239, 230, 0.3)";
-              e.currentTarget.style.color = "#f5efe6";
-            }}
-            aria-label="Open menu"
-          >
-            Menu
-          </button>
-        </nav>
-      </motion.header>
-
-      {/* Fullscreen menu overlay */}
-      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </>
   );
 }
