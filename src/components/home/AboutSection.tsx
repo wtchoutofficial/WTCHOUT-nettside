@@ -386,7 +386,7 @@ function SidePanel({ kind }: { kind: "dusk" | "dawn" }) {
       {/* Mirrored image — parrot on dusk side, tiger eye on dawn side */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/upcoming/dusk-to-dawn.png"
+        src="/images/upcoming/dusk-to-dawn.jpg"
         alt=""
         aria-hidden="true"
         style={{

@@ -10,6 +10,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
+import Preloader from "@/components/ui/Preloader";
 
 const anton = Anton({
   weight: "400",
@@ -70,7 +71,27 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={fontVars}>
+      <head>
+        <link
+          rel="preload"
+          as="video"
+          href="/videos/sora-jungle.mp4"
+          type="video/mp4"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/upcoming/dusk-to-dawn.jpg"
+          fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/about/portrait.jpg"
+        />
+      </head>
       <body className="antialiased">
+        <Preloader />
         <CustomCursor />
         <RevealOnScroll />
         <div className="grain" aria-hidden="true" />

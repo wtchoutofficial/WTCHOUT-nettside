@@ -134,7 +134,7 @@ export default function ComingSection() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  backgroundImage: "url(/images/upcoming/dusk-to-dawn.png)",
+                  backgroundImage: "url(/images/upcoming/dusk-to-dawn.jpg)",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   filter: "saturate(0.95) contrast(1.05)",
