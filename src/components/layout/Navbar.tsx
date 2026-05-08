@@ -109,7 +109,17 @@ export default function Navbar() {
           className="lg:hidden"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
-          style={{ color: "var(--bone)" }}
+          style={{
+            color: "var(--bone)",
+            padding: "8px 12px",
+            border: "1px solid rgba(245,240,232,0.2)",
+            borderRadius: 0,
+            fontFamily: "var(--font-jetbrains), monospace",
+            fontSize: "11px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            minHeight: "40px",
+          }}
         >
           {open ? "Close" : "Menu"}
         </button>

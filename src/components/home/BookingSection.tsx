@@ -361,6 +361,7 @@ export default function BookingSection() {
                   {status === "loading" ? "Sending…" : "Send the brief"}
                 </button>
                 <div
+                  className="legal"
                   style={{
                     fontFamily: "var(--font-jetbrains), monospace",
                     fontSize: "11px",
@@ -464,13 +465,18 @@ export default function BookingSection() {
         .form-row select { -webkit-appearance: none; appearance: none; }
         .form-row select option { background: var(--jungle-deep); color: var(--bone); }
         @media (max-width: 700px) {
+          .booking-grid { gap: 48px !important; }
           .form-row {
             grid-template-columns: 1fr !important;
-            gap: 8px !important;
-            padding: 16px 0 !important;
+            gap: 6px !important;
+            padding: 14px 0 !important;
           }
           .form-row::before { display: none; }
           .form-row input, .form-row select { font-size: 22px; }
+          .form-row textarea { font-size: 15px; }
+          .submit-btn { width: 100%; padding: 18px 32px !important; font-size: 26px !important; }
+          .form-actions { flex-direction: column; align-items: stretch !important; gap: 14px !important; }
+          .form-actions .legal { max-width: 100% !important; text-align: left; }
         }
       `}</style>
     </section>

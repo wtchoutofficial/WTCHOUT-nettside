@@ -135,6 +135,7 @@ export default function HeroSection() {
     <section
       id="hero"
       ref={heroRef}
+      className="hero-section"
       style={{
         position: "relative",
         height: "300vh",

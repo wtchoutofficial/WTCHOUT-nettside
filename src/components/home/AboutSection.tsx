@@ -285,16 +285,17 @@ export default function AboutSection() {
 
       <style>{`
         .about-editorial {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr);
-          gap: 48px;
-          align-items: start;
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
         }
-        .about-title { grid-area: title; }
-        .about-bio { grid-area: bio; }
-        .about-portrait { grid-area: portrait; }
+        .about-title { order: 1; }
+        .about-bio { order: 2; }
+        .about-portrait { order: 3; }
         @media (min-width: 800px) {
           .about-editorial {
+            display: grid;
+            flex-direction: initial;
             grid-template-columns: 1fr 0.9fr;
             grid-template-areas:
               "title    portrait"
@@ -304,8 +305,27 @@ export default function AboutSection() {
             column-gap: 80px;
             align-items: start;
           }
+          .about-title { grid-area: title; order: initial; }
+          .about-bio { grid-area: bio; order: initial; }
+          .about-portrait { grid-area: portrait; order: initial; }
           .stats-grid { grid-template-columns: repeat(4, 1fr) !important; }
           .two-sides { grid-template-columns: 1fr 1fr !important; }
+        }
+        @media (max-width: 700px) {
+          .about-intro { margin-bottom: 60px !important; }
+          .about-quote { margin-bottom: 60px !important; padding: 36px 0 !important; }
+          .stats-grid {
+            margin-bottom: 60px !important;
+            gap: 12px !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .about-editorial { gap: 28px !important; }
+          .about-title { font-size: clamp(40px, 12vw, 72px) !important; }
+          .about-bio p { font-size: 16px !important; line-height: 1.5 !important; }
+          .about-portrait { max-width: 100% !important; justify-self: stretch !important; }
+          .side-dusk, .side-dawn { padding: 36px 22px !important; min-height: 340px !important; }
+          .side-dusk h3, .side-dawn h3 { font-size: clamp(64px, 18vw, 100px) !important; margin-bottom: 18px !important; }
+          .side-dusk p, .side-dawn p { font-size: 15px !important; margin-bottom: 22px !important; }
         }
       `}</style>
     </section>
