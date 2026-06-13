@@ -75,20 +75,23 @@ body {
   }
 }
 
-/* ============ Hero poster cross-fade (DUSK/DAWN) ============ */
-.hero-poster {
-  opacity: 1;
-  transition: opacity 1.5s ease;
+/* ============ Hero backdrop (dark, mood-graded, no photo) ============ */
+.hero-stage {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 38%, #1e150c 0%, #0a0d08 55%, #05080a 100%);
+  transition: background 1.5s ease;
 }
-.hero-poster--dawn { opacity: 0; }
-html[data-mood="dawn"] .hero-poster--dusk { opacity: 0; }
-html[data-mood="dawn"] .hero-poster--dawn { opacity: 1; }
+html[data-mood="dawn"] .hero-stage {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 38%, #0c2823 0%, #07140f 55%, #04090a 100%);
+}
 
 /* Reduced motion: static poster hero, no 300vh scroll runway */
 .hero-section[data-reduced] {
   height: 100svh !important;
   min-height: 100svh !important;
 }
+
 
 /* ============ Mobile padding overrides ============ */
 @media (max-width: 700px) {

@@ -6,12 +6,18 @@ import { mulberry32, type SharedUniforms } from "./palettes";
 
 const VERT = /* glsl */ `
   attribute float aSeed;
+  uniform float uTime;
   varying vec2 vUv;
   varying float vSeed;
   void main() {
     vUv = uv;
     vSeed = aSeed;
-    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(position, 1.0);
+    vec3 pos = position;
+    // Slow, gentle drift — beams pan softly through the canopy, no jitter.
+    pos.x += sin(uTime * (0.10 + 0.07 * fract(aSeed)) + aSeed * 6.2831) * 1.3;
+    pos.x += sin(uTime * (0.16 + 0.06 * fract(aSeed * 1.7)) + aSeed * 2.3)
+             * 1.8 * (1.0 - uv.y);
+    gl_Position = projectionMatrix * modelViewMatrix * instanceMatrix * vec4(pos, 1.0);
   }
 `;
 
@@ -24,18 +30,24 @@ const FRAG = /* glsl */ `
   varying vec2 vUv;
   varying float vSeed;
 
+  const vec3 ACID = vec3(0.753, 0.988, 0.141); // #C0FC24
+
   float ripple(float x) {
     return sin(x) * 0.5 + sin(x * 2.7 + 1.3) * 0.25;
   }
 
   void main() {
-    float edge = smoothstep(0.0, 0.35, vUv.x) * smoothstep(1.0, 0.65, vUv.x);
-    float vert = pow(vUv.y, 1.6);
-    float shimmer = 0.75 + 0.25 * ripple(vUv.y * 6.0 - uTime * 0.5 + vSeed);
+    float edge = smoothstep(0.0, 0.32, vUv.x) * smoothstep(1.0, 0.68, vUv.x);
+    float vert = pow(vUv.y, 1.5);
+    // Steady god-rays — a faint, slow shimmer only, no pulsing or blinking.
+    float shimmer = 0.88 + 0.12 * ripple(vUv.y * 5.0 - uTime * 0.18 + vSeed);
     // Strongest mid-descent, but never fully gone at the canopy top
-    float desc = smoothstep(0.02, 0.4, uScroll) * smoothstep(1.0, 0.55, uScroll);
-    float env = 0.3 + 0.7 * desc;
-    vec3 col = mix(uShaftDusk, uShaftDawn, uMood);
+    float desc = smoothstep(0.02, 0.4, uScroll) * smoothstep(1.0, 0.5, uScroll);
+    float env = 0.45 + 0.55 * desc;
+    // Some beams lean acid-green, some toward the mood accent — multi-light feel,
+    // still inside the brand palette (no rainbow).
+    vec3 base = mix(uShaftDusk, uShaftDawn, uMood);
+    vec3 col = mix(base, ACID, 0.35 * fract(vSeed * 2.3));
     float i = edge * vert * shimmer * env * 0.55;
     gl_FragColor = vec4(col * i, i);
   }
@@ -49,7 +61,7 @@ export default function LightShafts({
   isMobile: boolean;
 }) {
   const mesh = useMemo(() => {
-    const count = isMobile ? 4 : 8;
+    const count = isMobile ? 6 : 11;
     const material = new THREE.ShaderMaterial({
       vertexShader: VERT,
       fragmentShader: FRAG,

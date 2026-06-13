@@ -16,10 +16,7 @@ export default function Preloader() {
   useEffect(() => {
     let cancelled = false;
     let loaded = 0;
-    const mood = localStorage.getItem("wtchout-mood");
-    const heroPoster =
-      mood === "dawn" ? "/images/hero/poster-dawn.jpg" : "/images/hero/poster-dusk.jpg";
-    const assets = [heroPoster, ...SHARED_ASSETS];
+    const assets = [...SHARED_ASSETS];
     const total = assets.length + 1; // +1 for fonts.ready
 
     const tick = () => {

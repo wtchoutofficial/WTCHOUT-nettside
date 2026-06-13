@@ -79,12 +79,6 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/images/hero/poster-dusk.jpg"
-          fetchPriority="high"
-        />
-        <link
-          rel="preload"
-          as="image"
           href="/images/upcoming/dusk-to-dawn.jpg"
           fetchPriority="high"
         />

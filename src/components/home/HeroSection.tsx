@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { useMood } from "@/context/MoodContext";
+import WordmarkDisintegrate from "@/components/home/WordmarkDisintegrate";
 
 const HeroCanvas = dynamic(() => import("@/components/three/HeroCanvas"), {
   ssr: false,
@@ -11,6 +12,8 @@ const HeroCanvas = dynamic(() => import("@/components/three/HeroCanvas"), {
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+  const kickerRef = useRef<HTMLDivElement>(null);
+  const sublineRef = useRef<HTMLDivElement>(null);
   const tintRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
   // Written by the RAF loop / pointer listener, read by the 3D camera each
@@ -47,10 +50,10 @@ export default function HeroSection() {
 
     const enable = () => setShow3D(true);
     if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(enable, { timeout: 500 });
+      const id = window.requestIdleCallback(enable, { timeout: 200 });
       return () => window.cancelIdleCallback(id);
     }
-    const t = setTimeout(enable, 250);
+    const t = setTimeout(enable, 120);
     return () => clearTimeout(t);
   }, []);
 
@@ -71,8 +74,13 @@ export default function HeroSection() {
       scrollRef.current = p;
 
       if (titleRef.current) {
-        titleRef.current.style.opacity = "1";
-        titleRef.current.style.transform = `translate(-50%, -50%) scale(${1 - p * 0.18})`;
+        // The wordmark canvas disintegrates itself; here we just lift the whole
+        // title block a touch and fade the small mono lines as it crumbles.
+        const dissolve = Math.max(0, Math.min(1, (p - 0.03) / 0.4));
+        titleRef.current.style.transform = `translate(-50%, calc(-50% - ${dissolve * 24}px)) scale(${1 - p * 0.18})`;
+        const small = String(Math.max(0, 1 - dissolve * 1.5));
+        if (kickerRef.current) kickerRef.current.style.opacity = small;
+        if (sublineRef.current) sublineRef.current.style.opacity = small;
       }
       if (tintRef.current) {
         tintRef.current.style.opacity = String(Math.max(0, 1 - p * 1.3));
@@ -115,6 +123,7 @@ export default function HeroSection() {
       }}
     >
       <div
+        className="hero-stage"
         style={{
           position: "sticky",
           top: 0,
@@ -122,42 +131,13 @@ export default function HeroSection() {
           width: "100vw",
           height: "100vh",
           overflow: "hidden",
-          background: "#000",
         }}
       >
-        {/* Poster pair — instant paint, permanent fallback below the canvas.
-            Cross-faded by html[data-mood] CSS. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/hero/poster-dusk.jpg"
-          alt=""
-          fetchPriority="high"
-          className="hero-poster hero-poster--dusk"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            pointerEvents: "none",
-          }}
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/hero/poster-dawn.jpg"
-          alt=""
-          className="hero-poster hero-poster--dawn"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            pointerEvents: "none",
-          }}
-        />
+        {/* Dark mood-graded backdrop (no photo) — instant paint + permanent
+            fallback. The 3D scene fades in from this same dark tone, so there's
+            never a video-looking frame. */}
 
-        {/* Real-time jungle — lazy chunk, fades in over the poster. */}
+        {/* Real-time jungle — lazy chunk, fades in over the backdrop. */}
         {show3D && (
           <HeroCanvas
             scrollRef={scrollRef}
@@ -232,6 +212,7 @@ export default function HeroSection() {
           }}
         >
           <div
+            ref={kickerRef}
             style={{
               fontFamily: "var(--font-jetbrains), monospace",
               fontSize: "11px",
@@ -243,22 +224,26 @@ export default function HeroSection() {
           >
             — Above the canopy · scroll to descend —
           </div>
+          {/* Visually-hidden heading for SEO / screen readers; the canvas is
+              the visual that disintegrates on scroll. */}
           <h1
             style={{
-              fontFamily: "var(--font-anton), sans-serif",
-              fontSize: "clamp(80px, 14vw, 220px)",
-              fontWeight: 900,
-              color: "#f6f4ef",
-              letterSpacing: "-0.04em",
-              lineHeight: 0.85,
-              margin: 0,
-              textShadow: "0 4px 40px rgba(0,0,0,0.6)",
-              textTransform: "uppercase",
+              position: "absolute",
+              width: 1,
+              height: 1,
+              padding: 0,
+              margin: -1,
+              overflow: "hidden",
+              clip: "rect(0 0 0 0)",
+              whiteSpace: "nowrap",
+              border: 0,
             }}
           >
             WTCHOUT
           </h1>
+          <WordmarkDisintegrate scrollRef={scrollRef} isMobile={isMobile} />
           <div
+            ref={sublineRef}
             style={{
               fontFamily: "var(--font-jetbrains), monospace",
               fontSize: "12px",
