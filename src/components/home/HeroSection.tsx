@@ -16,6 +16,7 @@ export default function HeroSection() {
   const sublineRef = useRef<HTMLDivElement>(null);
   const tintRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
+  const panelsRef = useRef<HTMLDivElement>(null);
   // Written by the RAF loop / pointer listener, read by the 3D camera each
   // frame — refs so scrolling never triggers React re-renders.
   const scrollRef = useRef(0);
@@ -81,6 +82,7 @@ export default function HeroSection() {
         const small = String(Math.max(0, 1 - dissolve * 1.5));
         if (kickerRef.current) kickerRef.current.style.opacity = small;
         if (sublineRef.current) sublineRef.current.style.opacity = small;
+        if (panelsRef.current) panelsRef.current.style.opacity = small;
       }
       if (tintRef.current) {
         tintRef.current.style.opacity = String(Math.max(0, 1 - p * 1.3));
@@ -107,6 +109,27 @@ export default function HeroSection() {
     window.addEventListener("pointermove", onMove, { passive: true });
     return () => window.removeEventListener("pointermove", onMove);
   }, [isMobile, reduced]);
+
+  const MOODS = [
+    {
+      key: "dusk" as const,
+      name: "DUSK",
+      line: "The warm end — groovy, sun-soaked house.",
+      genres: "House · Afro House · Disco-house · Minimal",
+      track: "VETLE",
+      url: "https://open.spotify.com/track/5vHlkTAnn5vu2sglWlhVhD",
+      accent: "#e89a3c",
+    },
+    {
+      key: "dawn" as const,
+      name: "DAWN",
+      line: "The dark end — raw, late-night rave.",
+      genres: "UK Garage · Hard House · Breaks · Techno",
+      track: "ELSK",
+      url: "https://open.spotify.com/track/7k6nrlQrQzPMA13mPYIIUj",
+      accent: "#4fc2ab",
+    },
+  ];
 
   return (
     <section
@@ -222,7 +245,7 @@ export default function HeroSection() {
               marginBottom: "24px",
             }}
           >
-            — Above the canopy · scroll to descend —
+            Oscar André Naas — Hustadvika, NO
           </div>
           {/* Visually-hidden heading for SEO / screen readers; the canvas is
               the visual that disintegrates on scroll. */}
@@ -253,62 +276,105 @@ export default function HeroSection() {
               marginTop: "24px",
             }}
           >
-            — norwegian house &amp; rave —
+            Norwegian house &amp; rave · two moods, one world
           </div>
         </div>
 
-        {/* Mood toggle */}
+        {/* DUSK / DAWN identity panels — the dual mood is the hero. Click a
+            side to grade the whole scene; each carries its genres + a track. */}
         <div
+          ref={panelsRef}
+          className="hero-moods"
           style={{
             position: "absolute",
-            left: "32px",
-            bottom: "32px",
+            left: 0,
+            right: 0,
+            bottom: "44px",
             zIndex: 7,
             display: "flex",
-            alignItems: "center",
-            gap: "10px",
+            justifyContent: "center",
+            gap: "clamp(24px, 6vw, 90px)",
+            padding: "0 40px",
             pointerEvents: "auto",
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: "10px",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
           }}
         >
-          <button
-            type="button"
-            onClick={() => setMood("dusk")}
-            aria-pressed={mood === "dusk"}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              font: "inherit",
-              letterSpacing: "inherit",
-              textTransform: "inherit",
-              color: mood === "dusk" ? "#e89a3c" : "rgba(246,244,239,0.4)",
-              transition: "color 0.4s ease",
-            }}
-          >
-            Dusk
-          </button>
-          <span style={{ color: "rgba(246,244,239,0.3)" }}>·</span>
-          <button
-            type="button"
-            onClick={() => setMood("dawn")}
-            aria-pressed={mood === "dawn"}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              font: "inherit",
-              letterSpacing: "inherit",
-              textTransform: "inherit",
-              color: mood === "dawn" ? "#4fc2ab" : "rgba(246,244,239,0.4)",
-              transition: "color 0.4s ease",
-            }}
-          >
-            Dawn
-          </button>
+          {MOODS.map((m) => {
+            const activeMood = mood === m.key;
+            return (
+              <button
+                key={m.key}
+                type="button"
+                onClick={() => setMood(m.key)}
+                aria-pressed={activeMood}
+                className="hero-mood"
+                style={{
+                  flex: "0 1 320px",
+                  textAlign: m.key === "dusk" ? "right" : "left",
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  opacity: activeMood ? 1 : 0.42,
+                  transition: "opacity 0.5s ease",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-anton), sans-serif",
+                    fontSize: "clamp(22px, 2.6vw, 34px)",
+                    letterSpacing: "0.04em",
+                    color: activeMood ? m.accent : "var(--bone)",
+                    transition: "color 0.5s ease",
+                    lineHeight: 1,
+                  }}
+                >
+                  {m.name}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-bricolage), sans-serif",
+                    fontSize: "13px",
+                    color: "var(--bone-dim)",
+                    marginTop: "8px",
+                    lineHeight: 1.4,
+                    maxWidth: "320px",
+                  }}
+                >
+                  {m.line}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-jetbrains), monospace",
+                    fontSize: "9px",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "rgba(246,244,239,0.55)",
+                    marginTop: "10px",
+                  }}
+                >
+                  {m.genres}
+                </div>
+                <a
+                  href={m.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    display: "inline-block",
+                    fontFamily: "var(--font-jetbrains), monospace",
+                    fontSize: "10px",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "var(--neon-lime)",
+                    marginTop: "14px",
+                    textDecoration: "none",
+                  }}
+                >
+                  ▶ Listen · {m.track}
+                </a>
+              </button>
+            );
+          })}
         </div>
 
         <div

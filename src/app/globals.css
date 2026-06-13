@@ -75,6 +75,22 @@ body {
   }
 }
 
+/* ============ Hero DUSK/DAWN mood panels ============ */
+.hero-mood:hover { opacity: 1 !important; }
+.hero-mood a:hover { text-decoration: underline; }
+@media (max-width: 760px) {
+  .hero-moods {
+    flex-direction: column;
+    align-items: center;
+    gap: 22px !important;
+    bottom: 30px !important;
+  }
+  .hero-mood {
+    text-align: center !important;
+    flex-basis: auto !important;
+  }
+}
+
 /* ============ Hero backdrop (dark, mood-graded, no photo) ============ */
 .hero-stage {
   background:
