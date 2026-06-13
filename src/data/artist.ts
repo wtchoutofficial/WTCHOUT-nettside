@@ -4,11 +4,10 @@ export const artist = {
   age: 25,
   from: "Hustadvika, Norway",
   established: 2019,
-  tagline: "Sound beyond boundaries",
+  tagline: "Norwegian house & rave",
   bio: [
-    "Oscar André Naas, known as WTCHOUT, is a 25-year-old producer and DJ from Hustadvika, Norway. He picked up the guitar as a teenager, taught himself music production at 15, and never looked back — diving deep into FL Studio and Ableton to craft his own sound.",
-    "WTCHOUT operates on two wavelengths. Dusk is the warm, golden side — house, Ibiza vibes, afro, minimal, and rally house. Dawn is where things get raw — hard house, UK garage, techno, hard techno, and drum & bass. Every set is different, every release a surprise.",
-    "Anti-mainstream by nature, WTCHOUT does everything his own way. No formulas, no trends — just music that hits right.",
+    "WTCHOUT is Oscar André Naas, a producer and DJ from Hustadvika on the west coast of Norway. Self-taught since 15, he builds house and rave tracks made for the floor — bouncy, raw, and built around big club drops. After early releases climbed past a few million streams, he's locked into one thing: dark, high-energy dance music with a foot in both UK house and rave.",
+    "WTCHOUT runs on two moods. DUSK is the warm end — groovy, sun-soaked club tracks, rolling basslines, golden hour on the floor. DAWN is the dark end — raw, late-night rave energy, UK-leaning drums, deep frequencies. Two moods, one world.",
   ],
   highlights: [
     { label: "EST", value: "2019" },

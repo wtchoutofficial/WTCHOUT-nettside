@@ -73,7 +73,7 @@ export default function SideRails() {
           transform: "translateY(-50%) rotate(-90deg)",
         }}
       >
-        Sound beyond boundaries
+        Norwegian house &amp; rave
       </div>
     </>
   );

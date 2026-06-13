@@ -1,4 +1,5 @@
 import { releases } from "@/data/releases";
+import VinylDisc from "@/components/ui/VinylDisc";
 
 const SIDES: Record<string, "Dawn" | "Dusk"> = {
   elsk: "Dawn",
@@ -124,22 +125,28 @@ export default function MusicSection() {
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div
-                  className="r-cover"
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    background: "var(--jungle-deep)",
-                    overflow: "hidden",
-                    transition: "transform .4s cubic-bezier(.7,0,.2,1)",
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={r.coverImage}
-                    alt={`${r.title} cover`}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
+                <div className="r-cover-cell" style={{ position: "relative" }}>
+                  <VinylDisc />
+                  <div
+                    className="r-cover"
+                    style={{
+                      position: "relative",
+                      zIndex: 2,
+                      width: "80px",
+                      height: "80px",
+                      background: "var(--jungle-deep)",
+                      overflow: "hidden",
+                      transition:
+                        "transform .4s cubic-bezier(.7,0,.2,1), box-shadow .4s ease",
+                    }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={r.coverImage}
+                      alt={`${r.title} cover`}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                  </div>
                 </div>
                 <div
                   className="r-title"
@@ -204,7 +211,7 @@ export default function MusicSection() {
                     textAlign: "right",
                   }}
                 >
-                  Listen ↗
+                  {"Listen ↗︎"}
                 </div>
                 <div
                   className="r-arrow"
@@ -217,7 +224,7 @@ export default function MusicSection() {
                     transition: "transform .4s",
                   }}
                 >
-                  ↗
+                  {"↗︎"}
                 </div>
               </a>
             );

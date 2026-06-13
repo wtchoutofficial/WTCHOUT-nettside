@@ -75,6 +75,21 @@ body {
   }
 }
 
+/* ============ Hero poster cross-fade (DUSK/DAWN) ============ */
+.hero-poster {
+  opacity: 1;
+  transition: opacity 1.5s ease;
+}
+.hero-poster--dawn { opacity: 0; }
+html[data-mood="dawn"] .hero-poster--dusk { opacity: 0; }
+html[data-mood="dawn"] .hero-poster--dawn { opacity: 1; }
+
+/* Reduced motion: static poster hero, no 300vh scroll runway */
+.hero-section[data-reduced] {
+  height: 100svh !important;
+  min-height: 100svh !important;
+}
+
 /* ============ Mobile padding overrides ============ */
 @media (max-width: 700px) {
   section[id="releases"],
@@ -194,8 +209,85 @@ body {
 .release-row:hover { padding-left: 32px; }
 .release-row:hover::before { transform: scaleY(1); }
 .release-row:hover * { color: var(--jungle-deep) !important; }
-.release-row:hover .r-cover { transform: scale(1.06) rotate(-2deg); z-index: 2; }
+.release-row:hover .r-cover {
+  transform: perspective(600px) rotateX(6deg) rotateY(-8deg) scale(1.06);
+  z-index: 2;
+  box-shadow: 0 0 0 1px rgba(192, 252, 36, 0.55), 0 10px 30px rgba(192, 252, 36, 0.22);
+}
 .release-row:hover .r-arrow { transform: rotate(0deg); }
+
+/* ============ Vinyl disc (home release rows) ============ */
+.vinyl-disc {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transform: translateX(0);
+  transition: transform 0.45s cubic-bezier(.7, 0, .2, 1);
+}
+.vinyl-disc__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #c0fc24 0 13%, #0a0a0a 13.5% 16.5%, transparent 17%),
+    repeating-radial-gradient(circle at 50% 50%, #0c0c0c 0 1px, #18180f 1.5px 3px),
+    radial-gradient(circle at 50% 50%, #1a1a1a 0%, #050505 100%);
+  background-color: #0a0a0a;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(192, 252, 36, 0.15);
+}
+.vinyl-disc__face::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #000;
+  transform: translate(-50%, -50%);
+}
+.release-row:hover .vinyl-disc { transform: translateX(34px); }
+.release-row:hover .vinyl-disc__face { animation: spin 1.8s linear infinite; }
+@media (max-width: 700px) {
+  .vinyl-disc { display: none; }
+}
+
+/* ============ Section seam haze ============ */
+.section-haze {
+  position: relative;
+  height: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.section-haze > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -80px;
+  height: 160px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.section-haze > span:nth-child(1) {
+  background: radial-gradient(60% 80% at 30% 50%, rgba(200, 255, 42, 0.05), transparent 70%);
+  animation: haze-drift-a 45s ease-in-out infinite;
+}
+.section-haze > span:nth-child(2) {
+  background: radial-gradient(55% 75% at 70% 50%, rgba(245, 240, 232, 0.04), transparent 70%);
+  animation: haze-drift-b 60s ease-in-out infinite;
+}
+@keyframes haze-drift-a {
+  0%, 100% { transform: translateX(-8%); }
+  50% { transform: translateX(8%); }
+}
+@keyframes haze-drift-b {
+  0%, 100% { transform: translateX(6%); }
+  50% { transform: translateX(-6%); }
+}
+@media (max-width: 700px) {
+  .section-haze { display: none; }
+}
 
 .release-preview.show {
   opacity: 1 !important;
@@ -264,7 +356,7 @@ body {
   transition: padding-right .4s cubic-bezier(.7,0,.2,1);
 }
 .submit-btn::after {
-  content: "→";
+  content: "→︎";
   position: absolute;
   right: 24px;
   top: 50%;
@@ -345,4 +437,27 @@ body {
 }
 .footer-mega.in-view::before {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+  /* Universal reset — kills decorative CSS animations and transitions
+     (marquee, spin star, vinyl, haze, poster cross-fade, reveals). */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .section-haze { display: none !important; }
+  .vinyl-disc { display: none !important; }
+  /* Collapse at first paint via CSS only — no JS/data-reduced dependency,
+     so reduced-motion users never see the 300vh→100svh reflow. */
+  .hero-section,
+  .hero-section[data-reduced] {
+    height: 100svh !important;
+    min-height: 100svh !important;
+  }
 }

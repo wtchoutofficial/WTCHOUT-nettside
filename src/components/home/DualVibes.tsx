@@ -22,8 +22,8 @@ const panels: VibePanel[] = [
     label: "Dusk",
     subtitle: "The warm side",
     description:
-      "Sunsets, golden tones and groovy rhythms. Dusk is the sound of late summer evenings — house, disco and melodies that make you stay a little longer.",
-    genres: ["House", "Disco", "Afro", "Minimal", "Rally House"],
+      "The warm end of the night. Groovy, sun-soaked house — rolling basslines and golden tones that make you stay a little longer.",
+    genres: ["House", "Afro House", "Disco-house", "Minimal"],
     accentColor: "#ff6b2c",
     textColor: "#d4a574",
     bgColor: "#1e1812",
@@ -35,8 +35,8 @@ const panels: VibePanel[] = [
     label: "Dawn",
     subtitle: "The dark side",
     description:
-      "When the lights go out and the bass takes over. Dawn is the raw and unknown — underground techno, deep frequencies and nights that never end.",
-    genres: ["Hard House", "UK Garage", "Techno", "Hard Techno", "DnB"],
+      "The dark end. Raw club energy — UK-leaning drums, deep frequencies and nights that never end.",
+    genres: ["UK Garage", "Hard House", "Breaks", "Techno"],
     accentColor: "#e03c3c",
     textColor: "#d4a0a0",
     bgColor: "#0d0d14",

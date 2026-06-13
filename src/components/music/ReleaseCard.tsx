@@ -39,9 +39,14 @@ export function ReleaseCard({ release }: ReleaseCardProps) {
           />
           <motion.div
             className="relative h-full w-full"
+            style={{ transformPerspective: 800 }}
             whileHover={{
               scale: 1.05,
-              filter: "hue-rotate(15deg) brightness(1.1)",
+              rotateX: 4,
+              rotateY: -6,
+              filter: "brightness(1.08)",
+              boxShadow:
+                "0 0 0 1px rgba(192,252,36,0.55), 0 12px 34px rgba(192,252,36,0.22)",
             }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.4, ease: "easeOut" }}

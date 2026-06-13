@@ -70,30 +70,16 @@ export default function AboutSection() {
                   marginBottom: "24px",
                 }}
               >
+                WTCHOUT is{" "}
                 <strong style={{ color: "var(--bone)", fontWeight: 600 }}>
                   Oscar André Naas
-                </strong>{" "}
-                — known as WTCHOUT — is a 25-year-old producer and DJ from Hustadvika,
-                Norway. He picked up the guitar as a teenager, taught himself music
-                production at 15, and never looked back — diving deep into FL Studio
-                and Ableton to craft his own sound.
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-bricolage), sans-serif",
-                  fontSize: "18px",
-                  lineHeight: 1.6,
-                  color: "var(--bone-dim)",
-                  marginBottom: "24px",
-                }}
-              >
-                WTCHOUT operates on two wavelengths.{" "}
-                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>Dusk</strong>{" "}
-                is the warm, golden side — house, Ibiza vibes, afro, minimal, rally
-                house.{" "}
-                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>Dawn</strong>{" "}
-                is where things get raw — hard house, UK garage, techno, hard techno,
-                drum &amp; bass.
+                </strong>
+                , a producer and DJ from Hustadvika on the west coast of Norway.
+                Self-taught since 15, he builds house and rave tracks made for the
+                floor — bouncy, raw, and built around big club drops. After early
+                releases climbed past a few million streams, he&apos;s locked into one
+                thing: dark, high-energy dance music with a foot in both UK house and
+                rave.
               </p>
               <p
                 style={{
@@ -103,8 +89,13 @@ export default function AboutSection() {
                   color: "var(--bone-dim)",
                 }}
               >
-                Anti-mainstream by nature. No formulas, no trends — just music that hits
-                right.
+                WTCHOUT runs on two moods.{" "}
+                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>DUSK</strong>{" "}
+                is the warm end — groovy, sun-soaked club tracks, rolling basslines,
+                golden hour on the floor.{" "}
+                <strong style={{ color: "var(--bone)", fontWeight: 600 }}>DAWN</strong>{" "}
+                is the dark end — raw, late-night rave energy, UK-leaning drums, deep
+                frequencies. Two moods, one world.
               </p>
             </div>
 

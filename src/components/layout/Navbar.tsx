@@ -68,7 +68,17 @@ export default function Navbar() {
           color: "var(--bone)",
         }}
       >
-        <Link href="/#hero" className="flex items-center gap-2.5 font-bold">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 font-bold"
+          onClick={(e) => {
+            // Already on home → smooth-scroll to top instead of a no-op nav.
+            if (window.location.pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+        >
           <Image
             src="/images/branding/w-logo.png"
             alt="WTCHOUT"

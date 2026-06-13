@@ -31,22 +31,22 @@ export default function Footer() {
             </h5>
             <ul style={listStyle}>
               <FooterLink href="https://open.spotify.com/artist/6DeWCj9W2OMshT5sdCJnqa">
-                Spotify ↗
+                Spotify ↗︎
               </FooterLink>
               <FooterLink href="https://music.apple.com/no/artist/wtchout/1474091682">
-                Apple Music ↗
+                Apple Music ↗︎
               </FooterLink>
-              <FooterLink href="https://soundcloud.com/wtchoutofficial">SoundCloud ↗</FooterLink>
-              <FooterLink href="https://www.beatport.com/artist/wtchout/819182">Beatport ↗</FooterLink>
+              <FooterLink href="https://soundcloud.com/wtchoutofficial">SoundCloud ↗︎</FooterLink>
+              <FooterLink href="https://www.beatport.com/artist/wtchout/819182">Beatport ↗︎</FooterLink>
             </ul>
           </div>
           <div>
             <h5 style={h5Style}>— Follow</h5>
             <ul style={listStyle}>
-              <FooterLink href="https://www.instagram.com/wtchout.no">Instagram ↗</FooterLink>
-              <FooterLink href="https://www.facebook.com/wtchoutofficial">Facebook ↗</FooterLink>
-              <FooterLink href="https://www.tiktok.com/@wtchout">TikTok ↗</FooterLink>
-              <FooterLink href="https://www.youtube.com/@wtchoutmusic">YouTube ↗</FooterLink>
+              <FooterLink href="https://www.instagram.com/wtchoutmusic">Instagram ↗︎</FooterLink>
+              <FooterLink href="https://www.facebook.com/wtchoutofficial">Facebook ↗︎</FooterLink>
+              <FooterLink href="https://www.tiktok.com/@wtchoutmusic">TikTok ↗︎</FooterLink>
+              <FooterLink href="https://www.youtube.com/@wtchoutmusic">YouTube ↗︎</FooterLink>
             </ul>
           </div>
           <div>

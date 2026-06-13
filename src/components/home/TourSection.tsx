@@ -163,7 +163,7 @@ export default function TourSection() {
                 lineHeight: 1,
               }}
             >
-              Book the booth →
+              Book the booth →︎
             </a>
           </div>
         ) : (
@@ -263,7 +263,7 @@ export default function TourSection() {
                   textDecoration: r.sold ? "line-through" : undefined,
                 }}
               >
-                {r.sold ? "Sold out" : "Tickets ↗"}
+                {r.sold ? "Sold out" : "Tickets ↗︎"}
               </div>
               <div
                 className="arrow"
@@ -276,7 +276,7 @@ export default function TourSection() {
                   color: "var(--bone)",
                 }}
               >
-                {r.sold ? "×" : "↗"}
+                {r.sold ? "×" : "↗︎"}
               </div>
             </a>
           ))}

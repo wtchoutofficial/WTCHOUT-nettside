@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Side = "Dusk — golden hour" | "Dawn — into the dark" | "Both — full arc" | "Surprise me" | "";
 
@@ -15,6 +15,8 @@ const eventTypes = [
 export default function BookingSection() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [honeypot, setHoneypot] = useState("");
+  const formStartedAt = useRef(Date.now());
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -60,6 +62,8 @@ export default function BookingSection() {
           date: form.date || "flexible",
           venue: form.venue || "TBD",
           details: `${form.details}\n\nSide: ${form.side || "—"}`,
+          website: honeypot,
+          formStartedAt: formStartedAt.current,
         }),
       });
 
@@ -219,7 +223,32 @@ export default function BookingSection() {
               </p>
             </div>
           ) : (
-            <form className="reveal form" onSubmit={onSubmit}>
+            <form className="reveal form" onSubmit={onSubmit} noValidate>
+              {/* Honeypot — invisible to humans, irresistible to dumb bots. */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: "-9999px",
+                  top: "-9999px",
+                  width: "1px",
+                  height: "1px",
+                  overflow: "hidden",
+                  opacity: 0,
+                  pointerEvents: "none",
+                }}
+              >
+                <label htmlFor="bk-website">Website (leave empty)</label>
+                <input
+                  id="bk-website"
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
               <div
                 style={{
                   display: "flex",
@@ -246,7 +275,7 @@ export default function BookingSection() {
                     color: "var(--neon-lime)",
                   }}
                 >
-                  — Fill the brief ↓ click any line to type
+                  — Fill the brief ↓︎ click any line to type
                 </span>
               </div>
               <FormRow label="Name">
@@ -403,7 +432,7 @@ export default function BookingSection() {
           transition: border-color .25s, background-color .25s;
         }
         .form-row::before {
-          content: "→";
+          content: "→︎";
           grid-column: 3;
           grid-row: 1;
           font-family: var(--font-jetbrains), monospace;

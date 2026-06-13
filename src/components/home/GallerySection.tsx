@@ -54,7 +54,7 @@ export default function GallerySection() {
                 margin: 0,
               }}
             >
-              Not genres,
+              The life around
               <br />
               <em
                 style={{
@@ -64,7 +64,7 @@ export default function GallerySection() {
                   color: "var(--neon-lime)",
                 }}
               >
-                feelings.
+                the music.
               </em>
             </h2>
           </div>

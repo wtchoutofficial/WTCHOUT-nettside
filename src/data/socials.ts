@@ -17,7 +17,7 @@ export const socials: SocialLink[] = [
   },
   {
     name: "Instagram",
-    url: "https://www.instagram.com/wtchout.no",
+    url: "https://www.instagram.com/wtchoutmusic",
     icon: "instagram",
   },
   {
@@ -77,7 +77,7 @@ export const linkGroups: LinkGroup[] = [
     items: [
       {
         name: "Instagram",
-        url: "https://www.instagram.com/wtchout.no",
+        url: "https://www.instagram.com/wtchoutmusic",
         icon: "instagram",
       },
       {
@@ -87,7 +87,7 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "TikTok",
-        url: "https://www.tiktok.com/@wtchout",
+        url: "https://www.tiktok.com/@wtchoutmusic",
         icon: "tiktok",
       },
       {

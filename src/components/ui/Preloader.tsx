@@ -16,9 +16,10 @@ export default function Preloader() {
   useEffect(() => {
     let cancelled = false;
     let loaded = 0;
-    const isMobile = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
-    const heroVideo = isMobile ? "/videos/sora-jungle-mobile.mp4" : "/videos/sora-jungle.mp4";
-    const assets = [heroVideo, ...SHARED_ASSETS];
+    const mood = localStorage.getItem("wtchout-mood");
+    const heroPoster =
+      mood === "dawn" ? "/images/hero/poster-dawn.jpg" : "/images/hero/poster-dusk.jpg";
+    const assets = [heroPoster, ...SHARED_ASSETS];
     const total = assets.length + 1; // +1 for fonts.ready
 
     const tick = () => {
@@ -41,19 +42,10 @@ export default function Preloader() {
     document.fonts?.ready.then(tick).catch(tick);
 
     assets.forEach((src) => {
-      if (src.endsWith(".mp4")) {
-        const v = document.createElement("video");
-        v.preload = "auto";
-        v.muted = true;
-        v.src = src;
-        v.addEventListener("loadeddata", tick, { once: true });
-        v.addEventListener("error", tick, { once: true });
-      } else {
-        const img = new Image();
-        img.onload = tick;
-        img.onerror = tick;
-        img.src = src;
-      }
+      const img = new Image();
+      img.onload = tick;
+      img.onerror = tick;
+      img.src = src;
     });
 
     return () => {

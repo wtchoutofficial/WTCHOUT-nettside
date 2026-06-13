@@ -1,15 +1,26 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { useMood } from "@/context/MoodContext";
+
+const HeroCanvas = dynamic(() => import("@/components/three/HeroCanvas"), {
+  ssr: false,
+});
 
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const tintRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
-  const [loaded, setLoaded] = useState(false);
+  // Written by the RAF loop / pointer listener, read by the 3D camera each
+  // frame — refs so scrolling never triggers React re-renders.
+  const scrollRef = useRef(0);
+  const pointerRef = useRef({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const [reduced, setReduced] = useState(false);
+  const [show3D, setShow3D] = useState(false);
+  const { mood, setMood } = useMood();
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 900px), (pointer: coarse)");
@@ -19,154 +30,45 @@ export default function HeroSection() {
     return () => mq.removeEventListener?.("change", update);
   }, []);
 
+  // Gate the 3D layer: reduced motion / no WebGL / data-saver all fall back to
+  // the poster. One idle tick before loading so the poster is the LCP, not the
+  // three.js chunk.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setReduced(true);
+      return;
+    }
+    const probe = document.createElement("canvas");
+    const gl = probe.getContext("webgl2") || probe.getContext("webgl");
+    if (!gl) return;
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } })
+      .connection;
+    if (conn?.saveData) return;
+
+    const enable = () => setShow3D(true);
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(enable, { timeout: 500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const t = setTimeout(enable, 250);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Scroll progress + title/tint/hint choreography (unchanged from the video
+  // era — the same RAF now also feeds the 3D camera via scrollRef).
   useEffect(() => {
     const hero = heroRef.current;
-    const video = videoRef.current;
-    if (!hero || !video) return;
-
-    let videoReady = false;
-    let lastScrollY = window.scrollY;
-    let lastScrollTime = performance.now();
-    let pausedTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const onReady = () => {
-      if (videoReady) return;
-      videoReady = true;
-      setLoaded(true);
-      if (!isMobile) {
-        try {
-          video.pause();
-        } catch {}
-      }
-    };
-    video.addEventListener("loadedmetadata", onReady, { once: true });
-    video.addEventListener("loadeddata", onReady, { once: true });
-    video.addEventListener("canplay", onReady, { once: true });
-    if (video.readyState >= 1) onReady();
-    try {
-      video.load();
-    } catch {}
-
-    // Mobile: seek-only scroll-scrub. The mobile video is encoded all-keyframes
-    // so currentTime seeks are instant — no decode-from-keyframe latency.
-    // No velocity-based playback (iOS Safari handles play rate poorly mid-scroll).
-    if (isMobile) {
-      try {
-        video.pause();
-      } catch {}
-
-      let raf = 0;
-      let pending = false;
-      const tick = () => {
-        const rect = hero.getBoundingClientRect();
-        const total = hero.offsetHeight - window.innerHeight;
-        const p = Math.max(0, Math.min(1, -rect.top / total));
-
-        if (videoReady && video.duration && pending) {
-          const target = video.duration * p;
-          if (Math.abs(video.currentTime - target) > 0.03) {
-            try {
-              video.currentTime = target;
-            } catch {}
-          }
-          pending = false;
-        }
-
-        if (titleRef.current) {
-          titleRef.current.style.transform = `translate(-50%, -50%) scale(${1 - p * 0.18})`;
-        }
-        if (tintRef.current) {
-          tintRef.current.style.opacity = String(Math.max(0, 1 - p * 1.3));
-        }
-        if (hintRef.current) {
-          hintRef.current.style.opacity = String(Math.max(0, 1 - p * 6));
-        }
-        raf = requestAnimationFrame(tick);
-      };
-
-      const onScrollMobile = () => {
-        pending = true;
-      };
-
-      raf = requestAnimationFrame(tick);
-      window.addEventListener("scroll", onScrollMobile, { passive: true });
-      return () => {
-        cancelAnimationFrame(raf);
-        window.removeEventListener("scroll", onScrollMobile);
-      };
-    }
-
-    const computeProgress = () => {
-      const rect = hero.getBoundingClientRect();
-      const total = hero.offsetHeight - window.innerHeight;
-      return Math.max(0, Math.min(1, -rect.top / total));
-    };
-
-    const onScroll = () => {
-      if (!videoReady) return;
-      const now = performance.now();
-      const dy = window.scrollY - lastScrollY;
-      const dt = Math.max(1, now - lastScrollTime);
-      const velocity = dy / dt;
-      lastScrollY = window.scrollY;
-      lastScrollTime = now;
-
-      if (!video.duration) return;
-
-      const rate = Math.max(0.3, Math.min(4, Math.abs(velocity) * 2.5));
-
-      if (dy > 0) {
-        // Scrolling DOWN: play forward at velocity-driven rate.
-        // If we've reached the end of the video, hold there.
-        if (video.currentTime >= video.duration - 0.05) {
-          try {
-            video.pause();
-          } catch {}
-        } else {
-          try {
-            video.playbackRate = rate;
-            if (video.paused) video.play().catch(() => {});
-          } catch {}
-        }
-      } else if (dy < 0) {
-        // Scrolling UP: seek to the time that matches current scroll progress.
-        // This way scrolling all the way up brings the video back to frame 0.
-        try {
-          video.pause();
-        } catch {}
-        const p = computeProgress();
-        const target = video.duration * p;
-        try {
-          if (Math.abs(video.currentTime - target) > 0.02) {
-            video.currentTime = target;
-          }
-        } catch {}
-      }
-
-      if (pausedTimer) clearTimeout(pausedTimer);
-      pausedTimer = setTimeout(() => {
-        try {
-          video.pause();
-        } catch {}
-        // When scrolling stops, snap currentTime to the exact scroll position
-        // so any drift from velocity-based forward play is corrected.
-        const p = computeProgress();
-        if (video.duration) {
-          const target = video.duration * p;
-          try {
-            if (Math.abs(video.currentTime - target) > 0.05) {
-              video.currentTime = target;
-            }
-          } catch {}
-        }
-      }, 140);
-    };
+    if (!hero || reduced) return;
+    // Synchronous guard: `reduced` state only flips after the first commit, so
+    // without this the RAF would run for ~1 frame before the effect re-runs.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let raf = 0;
     const tick = () => {
       const rect = hero.getBoundingClientRect();
       const total = hero.offsetHeight - window.innerHeight;
-      const p = Math.max(0, Math.min(1, -rect.top / total));
+      const p = total > 0 ? Math.max(0, Math.min(1, -rect.top / total)) : 0;
+      scrollRef.current = p;
 
       if (titleRef.current) {
         titleRef.current.style.opacity = "1";
@@ -182,20 +84,28 @@ export default function HeroSection() {
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => cancelAnimationFrame(raf);
+  }, [reduced]);
 
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      if (pausedTimer) clearTimeout(pausedTimer);
+  // Pointer parallax source (desktop only — mobile gets autonomous sway in
+  // the camera rig instead of a gyro permission prompt).
+  useEffect(() => {
+    if (isMobile || reduced) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const onMove = (e: PointerEvent) => {
+      pointerRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointerRef.current.y = (e.clientY / window.innerHeight) * 2 - 1;
     };
-  }, [isMobile]);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [isMobile, reduced]);
 
   return (
     <section
       id="hero"
       ref={heroRef}
       className="hero-section"
+      data-reduced={reduced || undefined}
       style={{
         position: "relative",
         height: "300vh",
@@ -215,13 +125,14 @@ export default function HeroSection() {
           background: "#000",
         }}
       >
-        <video
-          ref={videoRef}
-          src={isMobile ? "/videos/sora-jungle-mobile.mp4" : "/videos/sora-jungle.mp4"}
-          muted
-          playsInline
-          preload="auto"
-          disablePictureInPicture
+        {/* Poster pair — instant paint, permanent fallback below the canvas.
+            Cross-faded by html[data-mood] CSS. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero/poster-dusk.jpg"
+          alt=""
+          fetchPriority="high"
+          className="hero-poster hero-poster--dusk"
           style={{
             position: "absolute",
             inset: 0,
@@ -229,10 +140,34 @@ export default function HeroSection() {
             height: "100%",
             objectFit: "cover",
             pointerEvents: "none",
-            display: "block",
-            willChange: "transform, filter",
           }}
         />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero/poster-dawn.jpg"
+          alt=""
+          className="hero-poster hero-poster--dawn"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* Real-time jungle — lazy chunk, fades in over the poster. */}
+        {show3D && (
+          <HeroCanvas
+            scrollRef={scrollRef}
+            pointerRef={pointerRef}
+            isMobile={isMobile}
+            mood={mood}
+            heroRef={heroRef}
+            onContextLost={() => setShow3D(false)}
+          />
+        )}
 
         {/* Color grade */}
         <div
@@ -333,8 +268,62 @@ export default function HeroSection() {
               marginTop: "24px",
             }}
           >
-            — sound beyond boundaries —
+            — norwegian house &amp; rave —
           </div>
+        </div>
+
+        {/* Mood toggle */}
+        <div
+          style={{
+            position: "absolute",
+            left: "32px",
+            bottom: "32px",
+            zIndex: 7,
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            pointerEvents: "auto",
+            fontFamily: "var(--font-jetbrains), monospace",
+            fontSize: "10px",
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setMood("dusk")}
+            aria-pressed={mood === "dusk"}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              font: "inherit",
+              letterSpacing: "inherit",
+              textTransform: "inherit",
+              color: mood === "dusk" ? "#e89a3c" : "rgba(246,244,239,0.4)",
+              transition: "color 0.4s ease",
+            }}
+          >
+            Dusk
+          </button>
+          <span style={{ color: "rgba(246,244,239,0.3)" }}>·</span>
+          <button
+            type="button"
+            onClick={() => setMood("dawn")}
+            aria-pressed={mood === "dawn"}
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              font: "inherit",
+              letterSpacing: "inherit",
+              textTransform: "inherit",
+              color: mood === "dawn" ? "#4fc2ab" : "rgba(246,244,239,0.4)",
+              transition: "color 0.4s ease",
+            }}
+          >
+            Dawn
+          </button>
         </div>
 
         <div
@@ -352,27 +341,7 @@ export default function HeroSection() {
             willChange: "opacity",
           }}
         >
-          scroll ↓
-        </div>
-
-        {/* Loading overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: loaded ? "none" : "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "rgba(246,244,239,0.5)",
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: "10px",
-            letterSpacing: "0.4em",
-            textTransform: "uppercase",
-            zIndex: 10,
-            background: "#000",
-          }}
-        >
-          loading the canopy…
+          scroll ↓︎
         </div>
       </div>
     </section>

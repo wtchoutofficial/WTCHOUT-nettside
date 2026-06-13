@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import Preloader from "@/components/ui/Preloader";
+import { MoodProvider } from "@/context/MoodContext";
 
 const anton = Anton({
   weight: "400",
@@ -47,17 +48,20 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "WTCHOUT — Sound beyond boundaries",
+    default: "WTCHOUT — Norwegian house & rave",
     template: "%s | WTCHOUT",
   },
   description:
-    "WTCHOUT — Norwegian DJ/producer Oscar André Naas. Two sides, one sound: Dusk & Dawn. Sound beyond boundaries.",
+    "WTCHOUT — Norwegian house & rave producer Oscar André Naas. Two moods, one world: DUSK & DAWN.",
   keywords: ["WTCHOUT", "music", "artist", "electronic", "DJ", "producer", "Norway"],
   icons: {
     icon: "/icon.png",
     apple: "/apple-icon.png",
   },
   openGraph: {
+    title: "WTCHOUT — Norwegian house & rave",
+    description:
+      "WTCHOUT — Norwegian house & rave producer Oscar André Naas. Two moods, one world: DUSK & DAWN.",
     images: ["/images/branding/w-logo.png"],
   },
 };
@@ -74,17 +78,9 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
-          as="video"
-          href="/videos/sora-jungle.mp4"
-          type="video/mp4"
-          media="(min-width: 901px)"
-        />
-        <link
-          rel="preload"
-          as="video"
-          href="/videos/sora-jungle-mobile.mp4"
-          type="video/mp4"
-          media="(max-width: 900px)"
+          as="image"
+          href="/images/hero/poster-dusk.jpg"
+          fetchPriority="high"
         />
         <link
           rel="preload"
@@ -99,13 +95,15 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <Preloader />
-        <CustomCursor />
-        <RevealOnScroll />
-        <div className="grain" aria-hidden="true" />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <MoodProvider>
+          <Preloader />
+          <CustomCursor />
+          <RevealOnScroll />
+          <div className="grain" aria-hidden="true" />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </MoodProvider>
       </body>
     </html>
   );
