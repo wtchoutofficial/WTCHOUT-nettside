@@ -160,7 +160,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open && (
         <div
-          className="fixed inset-0 z-[99] lg:hidden flex flex-col items-center justify-center gap-6"
+          className="fixed inset-0 z-[99] lg:hidden flex flex-col items-start justify-center gap-5 px-12"
           style={{
             background: "rgba(5, 13, 8, 0.97)",
             backdropFilter: "blur(20px)",
@@ -170,8 +170,8 @@ export default function Navbar() {
           {links.map((l) => {
             const mobileStyle = {
               fontFamily: "var(--font-anton), sans-serif",
-              fontSize: "44px",
-              lineHeight: 0.9,
+              fontSize: "clamp(36px, 12vw, 54px)",
+              lineHeight: 0.95,
               textTransform: "uppercase" as const,
               letterSpacing: "-0.02em",
               color: "var(--bone)",

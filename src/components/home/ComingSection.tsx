@@ -1,33 +1,12 @@
+import Soundwaves from "./Soundwaves";
+
 const cards = [
   {
     n: "001",
     title: "ID",
     em: "—",
-    sub: "1",
-    when: "EST. ?",
-    meta: "DAWN · TECHNO",
     blob: "var(--neon-lime)",
     blobPos: { top: "-40px", right: "-40px" },
-  },
-  {
-    n: "002",
-    title: "ID",
-    em: "—",
-    sub: "2",
-    when: "EST. ?",
-    meta: "DUSK · HOUSE",
-    blob: "var(--clay)",
-    blobPos: { bottom: "-40px", left: "-40px" },
-  },
-  {
-    n: "003",
-    title: "ID",
-    em: "—",
-    sub: "3",
-    when: "EST. ?",
-    meta: "DAWN · TECHNO",
-    blob: "var(--gold)",
-    blobPos: { top: "30%", left: "50%" },
   },
 ];
 
@@ -103,19 +82,11 @@ export default function ComingSection() {
               lineHeight: 1.4,
             }}
           >
-            Three drops loaded for 26.
+            One drop loaded for 26.
           </p>
         </div>
 
-        <div
-          className="coming-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "32px",
-            marginTop: "60px",
-          }}
-        >
+        <div className="coming-feature">
           {cards.map((c, i) => (
             <div
               key={c.n}
@@ -130,22 +101,14 @@ export default function ComingSection() {
                 transitionDelay: `${i * 0.15}s`,
               }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  backgroundImage: "url(/images/upcoming/dusk-to-dawn.jpg)",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  filter: "saturate(0.95) contrast(1.05)",
-                }}
-              />
+              <Soundwaves />
               <div
                 style={{
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(180deg, rgba(5,13,8,0.35) 0%, rgba(5,13,8,0.55) 55%, rgba(5,13,8,0.92) 100%)",
+                    "linear-gradient(180deg, rgba(5,13,8,0.72) 0%, rgba(5,13,8,0.15) 30%, rgba(5,13,8,0) 62%)",
+                  pointerEvents: "none",
                 }}
               />
               <div
@@ -207,40 +170,66 @@ export default function ComingSection() {
                     >
                       {c.em}
                     </em>
-                    <br />
-                    {c.sub}
-                  </div>
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-jetbrains), monospace",
-                      color: "var(--neon-lime)",
-                      fontSize: "13px",
-                      letterSpacing: "0.1em",
-                    }}
-                  >
-                    {c.when}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "var(--font-jetbrains), monospace",
-                      fontSize: "11px",
-                      letterSpacing: "0.2em",
-                      textTransform: "uppercase",
-                      color: "var(--bone-dim)",
-                      lineHeight: 1.8,
-                      marginTop: "8px",
-                    }}
-                  >
-                    {c.meta}
                   </div>
                 </div>
               </div>
             </div>
           ))}
+
+          {/* Teaser beside the single drop so the row stays balanced. */}
+          <div className="coming-detail reveal">
+            <p
+              style={{
+                fontFamily: "var(--font-instrument-serif), serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "clamp(28px, 3.4vw, 46px)",
+                lineHeight: 1.15,
+                color: "var(--bone)",
+                margin: 0,
+              }}
+            >
+              One track, fully formed —{" "}
+              <span style={{ color: "var(--neon-lime)" }}>
+                waiting on the right night to land.
+              </span>
+            </p>
+            <div
+              style={{
+                marginTop: "28px",
+                paddingTop: "20px",
+                borderTop: "1px solid rgba(245,240,232,0.15)",
+                fontFamily: "var(--font-jetbrains), monospace",
+                fontSize: "11px",
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: "var(--bone-dim)",
+              }}
+            >
+              — Stay close. It drops when it&apos;s ready.
+            </div>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        .coming-feature {
+          display: grid;
+          grid-template-columns: minmax(0, 400px) 1fr;
+          gap: 64px;
+          align-items: center;
+          margin-top: 60px;
+        }
+        @media (max-width: 760px) {
+          .coming-feature {
+            grid-template-columns: 1fr;
+            gap: 36px;
+            justify-items: center;
+          }
+          .coming-feature .coming-card { width: 100%; max-width: 340px; }
+          .coming-detail { text-align: center; }
+        }
+      `}</style>
     </section>
   );
 }
