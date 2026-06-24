@@ -2,18 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const links = [
+type NavLink = {
+  href: string;
+  id: string;
+  label: string;
+  /** True for real routes (rendered with next/link); others are in-page hashes. */
+  route?: boolean;
+};
+
+const links: NavLink[] = [
   { href: "#releases", id: "releases", label: "Releases" },
   { href: "#coming", id: "coming", label: "Coming" },
   { href: "#about", id: "about", label: "About" },
   { href: "#gallery", id: "gallery", label: "Gallery" },
   { href: "#tour", id: "tour", label: "Live" },
   { href: "#booking", id: "booking", label: "Booking" },
+  { href: "/links", id: "links", label: "Links", route: true },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("hero");
 
@@ -55,6 +66,9 @@ export default function Navbar() {
     };
   }, []);
 
+  // Standalone link-in-bio page renders its own chrome.
+  if (pathname === "/links") return null;
+
   return (
     <>
       <nav
@@ -82,23 +96,31 @@ export default function Navbar() {
           <Image
             src="/images/branding/w-logo.png"
             alt="WTCHOUT"
-            width={22}
-            height={22}
-            style={{ filter: "brightness(0) invert(1)", height: "22px", width: "auto" }}
+            width={26}
+            height={26}
+            style={{ filter: "brightness(0) invert(1)", height: "26px", width: "auto" }}
           />
-          <span>WTCHOUT</span>
+          <span style={{ fontSize: "19px", fontWeight: 800, letterSpacing: "0.03em" }}>
+            WTCHOUT
+          </span>
         </Link>
 
         <div className="hidden lg:flex gap-7">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className={`nav-link${activeId === l.id ? " is-active" : ""}`}
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) =>
+            l.route ? (
+              <Link key={l.href} href={l.href} className="nav-link">
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                className={`nav-link${activeId === l.id ? " is-active" : ""}`}
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </div>
 
         <div className="hidden md:flex items-center gap-4">
@@ -145,23 +167,35 @@ export default function Navbar() {
             WebkitBackdropFilter: "blur(20px)",
           }}
         >
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              style={{
-                fontFamily: "var(--font-anton), sans-serif",
-                fontSize: "44px",
-                lineHeight: 0.9,
-                textTransform: "uppercase",
-                letterSpacing: "-0.02em",
-                color: "var(--bone)",
-              }}
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) => {
+            const mobileStyle = {
+              fontFamily: "var(--font-anton), sans-serif",
+              fontSize: "44px",
+              lineHeight: 0.9,
+              textTransform: "uppercase" as const,
+              letterSpacing: "-0.02em",
+              color: "var(--bone)",
+            };
+            return l.route ? (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                style={mobileStyle}
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                style={mobileStyle}
+              >
+                {l.label}
+              </a>
+            );
+          })}
         </div>
       )}
 

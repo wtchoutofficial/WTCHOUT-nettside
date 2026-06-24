@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import {
   Anton,
+  Archivo,
   Bricolage_Grotesque,
   Instrument_Serif,
   JetBrains_Mono,
+  Space_Mono,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -40,6 +42,21 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
+// Hero (design handoff): Archivo for the wordmark/UI, Space Mono for labels.
+const archivo = Archivo({
+  weight: ["400", "500", "600", "800", "900"],
+  subsets: ["latin"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+  display: "swap",
+});
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -71,7 +88,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const fontVars = `${anton.variable} ${bricolage.variable} ${instrumentSerif.variable} ${jetbrains.variable}`;
+  const fontVars = `${anton.variable} ${bricolage.variable} ${instrumentSerif.variable} ${jetbrains.variable} ${archivo.variable} ${spaceMono.variable}`;
 
   return (
     <html lang="en" className={fontVars}>
@@ -79,13 +96,8 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/images/upcoming/dusk-to-dawn.jpg"
+          href="/images/hero/hero-portrait.jpg"
           fetchPriority="high"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/images/about/portrait.jpg"
         />
       </head>
       <body className="antialiased">

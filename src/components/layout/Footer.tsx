@@ -1,6 +1,11 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+  // Standalone link-in-bio page renders its own chrome.
+  if (usePathname() === "/links") return null;
+
   return (
     <footer
       style={{

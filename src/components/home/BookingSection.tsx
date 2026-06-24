@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Side = "Dusk — golden hour" | "Dawn — into the dark" | "Both — full arc" | "Surprise me" | "";
 
@@ -29,6 +29,14 @@ export default function BookingSection() {
 
   const onChange = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((s) => ({ ...s, [k]: v }));
+
+  // After a successful send, return to the empty form so a new inquiry can be
+  // submitted — otherwise the "Sent." card stays up permanently.
+  useEffect(() => {
+    if (status !== "success") return;
+    const t = setTimeout(() => setStatus("idle"), 8000);
+    return () => clearTimeout(t);
+  }, [status]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -221,6 +229,24 @@ export default function BookingSection() {
               <p style={{ color: "var(--bone-dim)", lineHeight: 1.6 }}>
                 Reply within 48h. If the vibe is right, you&apos;ll hear from me soon.
               </p>
+              <button
+                type="button"
+                onClick={() => setStatus("idle")}
+                style={{
+                  marginTop: "28px",
+                  background: "transparent",
+                  border: 0,
+                  padding: 0,
+                  cursor: "none",
+                  fontFamily: "var(--font-jetbrains), monospace",
+                  fontSize: "12px",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "var(--neon-lime)",
+                }}
+              >
+                ↻ Send another
+              </button>
             </div>
           ) : (
             <form className="reveal form" onSubmit={onSubmit} noValidate>

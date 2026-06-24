@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { releases } from "@/data/releases";
 import { linkGroups } from "@/data/socials";
 
 const platformIcons: Record<string, React.ReactNode> = {
@@ -21,14 +19,14 @@ const platformIcons: Record<string, React.ReactNode> = {
       <path d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c-.009-.06-.05-.1-.1-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.172 1.282c.013.06.045.094.104.094.057 0 .09-.037.104-.094l.2-1.282-.2-1.332c-.014-.057-.047-.094-.104-.094m1.8-1.16c-.063 0-.105.043-.112.098l-.2 2.388.2 2.373c.007.06.049.104.112.104.063 0 .105-.044.112-.104l.222-2.373-.222-2.388c-.007-.055-.049-.098-.112-.098m.899-.454c-.069 0-.116.048-.121.107l-.178 2.842.178 2.793c.005.063.052.107.121.107.067 0 .116-.044.121-.107l.2-2.793-.2-2.842c-.005-.059-.054-.107-.121-.107m.898-.39c-.078 0-.126.054-.131.116l-.156 3.232.156 3.157c.005.066.053.12.131.12.076 0 .126-.054.131-.12l.175-3.157-.175-3.232c-.005-.062-.055-.116-.131-.116m.9-.264c-.083 0-.135.06-.137.127l-.134 3.496.134 3.387c.002.07.054.127.137.127.08 0 .135-.057.137-.127l.15-3.387-.15-3.496c-.002-.067-.057-.127-.137-.127m.898-.156c-.09 0-.142.065-.145.136l-.112 3.652.112 3.495c.003.075.055.14.145.14.088 0 .142-.065.145-.14l.126-3.495-.126-3.652c-.003-.071-.057-.136-.145-.136m1.8-.327c-.098 0-.152.073-.154.15l-.09 3.979.09 3.542c.002.082.056.15.154.15.096 0 .15-.068.154-.15l.1-3.542-.1-3.979c-.004-.077-.058-.15-.154-.15m.899-.18c-.104 0-.162.077-.163.158l-.068 4.159.068 3.57c.001.085.059.158.163.158.1 0 .16-.073.163-.158l.076-3.57-.076-4.159c-.003-.081-.063-.158-.163-.158m1.352-.24c-.035-.003-.07-.003-.104-.003-.103 0-.158.081-.163.165l-.063 4.399.068 3.58c.005.09.06.165.163.165.1 0 .158-.075.163-.165l.075-3.58-.075-4.399c-.005-.084-.063-.162-.164-.162m.898.024c-.112 0-.168.087-.168.173l-.044 4.202.049 3.563c.005.09.056.173.163.173.104 0 .163-.082.168-.173l.054-3.563-.054-4.202c-.005-.086-.063-.173-.168-.173m.899-.072c-.117 0-.177.09-.177.18l-.022 4.274.027 3.545c.005.094.06.18.172.18.11 0 .172-.086.177-.18l.032-3.545-.032-4.274c-.005-.09-.065-.18-.177-.18m2.252.483c-.22 0-.399.18-.399.399v7.39c0 .22.18.4.399.4h3.249c1.52 0 2.751-1.231 2.751-2.751 0-1.52-1.231-2.751-2.751-2.751-.374 0-.73.075-1.055.21-.262-1.553-1.613-2.737-3.239-2.737-.326 0-.647.046-.955.14m-1.348-.14c-.12 0-.18.093-.18.187v7.642c.005.097.064.187.18.187.114 0 .18-.09.18-.187V11.64c0-.094-.066-.187-.18-.187" />
     </svg>
   ),
+  beatport: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+      <path d="M12 0a12 12 0 100 24 12 12 0 000-24zm0 3.6a1.5 1.5 0 011.5 1.5v5.06a4.65 4.65 0 11-2.4-1.18V5.1A1.5 1.5 0 0112 3.6zm-.6 8.55a2.55 2.55 0 100 5.1 2.55 2.55 0 000-5.1z" />
+    </svg>
+  ),
   youtube: (
     <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
       <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-    </svg>
-  ),
-  tidal: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-      <path d="M12.012 3.992L8.008 7.996 4.004 3.992 0 7.996 4.004 12l4.004-4.004L12.012 12l4.004-4.004L12.012 3.992zM12.012 12l-4.004 4.004L12.012 20.008l4.004-4.004L12.012 12zM20.02 3.992l-4.004 4.004L20.02 12l4.004-4.004-4.004-4.004z" />
     </svg>
   ),
   instagram: (
@@ -54,165 +52,385 @@ const platformIcons: Record<string, React.ReactNode> = {
   ),
 };
 
-const latestRelease = releases.find((r) => r.featured);
-
-const streamingPlatforms = [
-  { name: "Spotify", key: "spotifyUrl" as const, icon: "spotify" },
-  { name: "Apple Music", key: "appleMusicUrl" as const, icon: "apple" },
-  { name: "YouTube Music", key: "youtubeMusicUrl" as const, icon: "youtube" },
-  { name: "Tidal", key: "tidalUrl" as const, icon: "tidal" },
-];
-
 export default function LinksPage() {
   return (
-    <div
-      className="flex min-h-screen flex-col items-center px-4 pb-20 pt-28"
-      style={{ backgroundColor: "#1a1410" }}
-    >
-      {/* Header */}
-      <motion.div
-        className="mb-10 text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Link
-          href="/"
-          className="text-4xl font-bold tracking-widest transition-colors duration-300"
-          style={{ color: "#f5efe6" }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = "#ff6b2c")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "#f5efe6")}
-        >
-          WTCHOUT
-        </Link>
-        <p
-          className="mt-2 text-sm tracking-wide"
-          style={{ color: "#b8a690" }}
-        >
-          DJ / Producer from Norway
-        </p>
-      </motion.div>
+    <main className="bio-page">
+      {/* DUSK → DAWN atmosphere */}
+      <div className="bio-glow bio-glow--dusk" aria-hidden="true" />
+      <div className="bio-glow bio-glow--dawn" aria-hidden="true" />
 
-      <div className="w-full max-w-[480px]">
-        {/* Latest Release */}
-        {latestRelease && (
-          <motion.section
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <h2
-              className="mb-3 text-xs font-semibold uppercase tracking-widest"
-              style={{ color: "#ff6b2c" }}
-            >
-              Latest Release
-            </h2>
-            <div
-              className="overflow-hidden rounded-xl"
-              style={{ backgroundColor: "#2a2118" }}
-            >
-              <img
-                src={latestRelease.coverImage}
-                alt={latestRelease.title}
-                className="aspect-square w-full object-cover"
-              />
-              <div className="p-4">
-                <h3
-                  className="text-lg font-bold tracking-wide"
-                  style={{ color: "#f5efe6" }}
-                >
-                  {latestRelease.title}
-                </h3>
-                <p
-                  className="mt-0.5 text-xs tracking-wide"
-                  style={{ color: "#b8a690" }}
-                >
-                  WTCHOUT
-                  {latestRelease.description &&
-                    ` \u2022 ${latestRelease.description}`}
-                </p>
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  {streamingPlatforms.map((platform) => {
-                    const url = latestRelease[platform.key];
-                    if (!url) return null;
-                    return (
-                      <a
-                        key={platform.key}
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 hover:bg-[rgba(245,239,230,0.15)] active:bg-[rgba(245,239,230,0.2)]"
-                        style={{
-                          backgroundColor: "rgba(245, 239, 230, 0.08)",
-                          color: "#f5efe6",
-                        }}
-                      >
-                        {platformIcons[platform.icon]}
-                        {platform.name}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        )}
+      <div className="bio-col">
+        {/* ── Header ── */}
+        <header className="bio-header bio-reveal">
+          <p className="bio-kicker">Oscar André Naas</p>
+          <Link href="/" className="bio-wordmark" aria-label="WTCHOUT — home">
+            WTCHOUT
+          </Link>
+          <p className="bio-coords">Hustadvika, NO · 62.9°N 7.2°E</p>
 
-        {/* Link Groups */}
-        {linkGroups.map((group, groupIndex) => (
-          <motion.section
+          <div className="bio-duality" role="presentation">
+            <span className="bio-dot bio-dot--dusk" />
+            <span>Dusk</span>
+            <span className="bio-sep">/</span>
+            <span>Dawn</span>
+            <span className="bio-dot bio-dot--dawn" />
+          </div>
+          <p className="bio-tag">Norwegian house &amp; rave · two moods, one world</p>
+        </header>
+
+        {/* ── Link groups ── */}
+        {linkGroups.map((group, gi) => (
+          <section
             key={group.title}
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 + groupIndex * 0.1 }}
+            className={`bio-group bio-reveal bio-${group.mood}`}
+            style={{ animationDelay: `${0.1 + gi * 0.12}s` }}
           >
-            <h2
-              className="mb-3 text-xs font-semibold uppercase tracking-widest"
-              style={{ color: "#ff6b2c" }}
-            >
+            <h2 className="bio-group-title">
+              <span className="bio-group-bar" />
               {group.title}
             </h2>
-            <div className="flex flex-col gap-2.5">
+            <div className="bio-stack">
               {group.items.map((item) => {
-                const isExternal =
-                  item.url.startsWith("http") ||
-                  item.url.startsWith("mailto:");
+                const external =
+                  item.url.startsWith("http") || item.url.startsWith("mailto:");
                 return (
                   <a
                     key={item.name}
                     href={item.url}
-                    {...(isExternal
+                    {...(external
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className="flex items-center gap-3 rounded-xl px-4 py-3.5 transition-colors duration-200 hover:bg-[#352c22] active:bg-[#3d332a]"
-                    style={{
-                      backgroundColor: "#2a2118",
-                      color: "#f5efe6",
-                    }}
+                    className="bio-link"
                   >
-                    <span style={{ color: "#ff6b2c" }}>
-                      {platformIcons[item.icon] ?? null}
+                    <span className="bio-icon">{platformIcons[item.icon]}</span>
+                    <span className="bio-text">
+                      <span className="bio-name">{item.name}</span>
+                      {item.handle && (
+                        <span className="bio-handle">{item.handle}</span>
+                      )}
                     </span>
-                    <span className="text-sm font-medium tracking-wide">
-                      {item.name}
+                    <span className="bio-arrow" aria-hidden="true">
+                      ↗
                     </span>
-                    {item.description && (
-                      <span
-                        className="ml-auto text-xs"
-                        style={{ color: "#b8a690" }}
-                      >
-                        {item.description}
-                      </span>
-                    )}
                   </a>
                 );
               })}
             </div>
-          </motion.section>
+          </section>
         ))}
+
+        {/* ── Footer ── */}
+        <footer className="bio-foot bio-reveal" style={{ animationDelay: "0.5s" }}>
+          <Link href="/" className="bio-back">
+            ← wtchoutmusic.com
+          </Link>
+          <span className="bio-copy">© {new Date().getFullYear()} WTCHOUT</span>
+        </footer>
       </div>
-    </div>
+
+      <style>{`
+        .bio-page {
+          position: relative;
+          min-height: 100svh;
+          display: flex;
+          justify-content: center;
+          padding: clamp(48px, 9vh, 96px) 20px 64px;
+          overflow: hidden;
+          background:
+            linear-gradient(
+              180deg,
+              #1c1409 0%,
+              #150f09 20%,
+              #08110c 50%,
+              #07170f 80%,
+              #05130f 100%
+            );
+        }
+        .bio-glow {
+          position: fixed;
+          left: 50%;
+          width: 140vw;
+          max-width: 900px;
+          height: 60vh;
+          transform: translateX(-50%);
+          pointer-events: none;
+          filter: blur(40px);
+          z-index: 0;
+        }
+        .bio-glow--dusk {
+          top: -22vh;
+          background: radial-gradient(
+            ellipse 60% 60% at 50% 40%,
+            rgba(232, 154, 60, 0.22),
+            transparent 70%
+          );
+        }
+        .bio-glow--dawn {
+          bottom: -22vh;
+          background: radial-gradient(
+            ellipse 60% 60% at 50% 60%,
+            rgba(79, 194, 171, 0.18),
+            transparent 70%
+          );
+        }
+
+        .bio-col {
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          max-width: 460px;
+          display: flex;
+          flex-direction: column;
+          gap: 36px;
+        }
+
+        /* Entrance — visible by default; animates in only as enhancement, so
+           links never depend on JS/rAF to appear. */
+        .bio-reveal { opacity: 1; }
+        @keyframes bioReveal {
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: none; }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          .bio-reveal {
+            animation: bioReveal 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+          }
+        }
+
+        /* ── Header ── */
+        .bio-header { text-align: center; }
+        .bio-kicker {
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 10px;
+          letter-spacing: 0.4em;
+          text-transform: uppercase;
+          color: var(--bone-dim);
+          opacity: 0.75;
+          margin: 0 0 14px;
+        }
+        .bio-wordmark {
+          display: inline-block;
+          font-family: var(--font-anton), sans-serif;
+          font-size: clamp(52px, 16vw, 76px);
+          line-height: 0.9;
+          letter-spacing: 0.01em;
+          text-transform: uppercase;
+          text-decoration: none;
+          background: linear-gradient(
+            100deg,
+            var(--gold) 0%,
+            var(--bone) 48%,
+            #4fc2ab 100%
+          );
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          transition: filter 0.4s ease;
+        }
+        .bio-wordmark:hover {
+          filter: drop-shadow(0 0 22px rgba(200, 255, 42, 0.35));
+        }
+        .bio-coords {
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 10px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: var(--bone-dim);
+          opacity: 0.6;
+          margin: 14px 0 0;
+        }
+        .bio-duality {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          margin-top: 22px;
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 11px;
+          letter-spacing: 0.35em;
+          text-transform: uppercase;
+          color: var(--bone);
+        }
+        .bio-sep { color: var(--bone-dim); opacity: 0.5; }
+        .bio-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+        }
+        .bio-dot--dusk { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+        .bio-dot--dawn { background: #4fc2ab; box-shadow: 0 0 10px #4fc2ab; }
+        .bio-tag {
+          font-family: var(--font-bricolage), sans-serif;
+          font-size: 12px;
+          letter-spacing: 0.02em;
+          color: var(--bone-dim);
+          opacity: 0.7;
+          margin: 12px 0 0;
+        }
+
+        /* ── Group ── */
+        .bio-group-title {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          margin: 0 0 14px;
+          padding-left: 2px;
+        }
+        .bio-group-bar {
+          display: inline-block;
+          width: 18px;
+          height: 2px;
+        }
+        .bio-dusk .bio-group-title { color: var(--gold); }
+        .bio-dusk .bio-group-bar { background: var(--gold); }
+        .bio-dawn .bio-group-title { color: #4fc2ab; }
+        .bio-dawn .bio-group-bar { background: #4fc2ab; }
+        .bio-neutral .bio-group-title { color: var(--bone-dim); }
+        .bio-neutral .bio-group-bar { background: var(--bone-dim); }
+
+        .bio-stack {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        /* ── Link row ── */
+        .bio-link {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          padding: 15px 18px;
+          border-radius: 14px;
+          border: 1px solid rgba(245, 240, 232, 0.1);
+          background: rgba(245, 240, 232, 0.03);
+          color: var(--bone);
+          text-decoration: none;
+          overflow: hidden;
+          -webkit-tap-highlight-color: transparent;
+          transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1),
+            border-color 0.35s ease, background 0.35s ease;
+        }
+        .bio-link::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1);
+          z-index: 0;
+        }
+        .bio-dusk .bio-link::before {
+          background: linear-gradient(90deg, var(--gold), #e89a3c);
+        }
+        .bio-dawn .bio-link::before {
+          background: linear-gradient(90deg, var(--neon-lime), #4fc2ab);
+        }
+        .bio-neutral .bio-link::before {
+          background: linear-gradient(90deg, var(--bone), var(--bone-dim));
+        }
+        .bio-link > * { position: relative; z-index: 1; }
+
+        .bio-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: none;
+          transition: color 0.35s ease;
+        }
+        .bio-dusk .bio-icon { color: var(--gold); }
+        .bio-dawn .bio-icon { color: #4fc2ab; }
+        .bio-neutral .bio-icon { color: var(--bone-dim); }
+
+        .bio-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .bio-name {
+          font-family: var(--font-bricolage), sans-serif;
+          font-size: 15px;
+          font-weight: 600;
+          letter-spacing: 0.01em;
+          transition: color 0.35s ease;
+        }
+        .bio-handle {
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          color: var(--bone-dim);
+          opacity: 0.6;
+          transition: color 0.35s ease, opacity 0.35s ease;
+        }
+        .bio-arrow {
+          margin-left: auto;
+          font-size: 15px;
+          color: var(--bone-dim);
+          opacity: 0.45;
+          transition: color 0.35s ease, opacity 0.35s ease, transform 0.4s ease;
+        }
+
+        /* hover / focus → fill + invert */
+        .bio-link:hover,
+        .bio-link:focus-visible {
+          transform: translateY(-2px);
+          border-color: transparent;
+          outline: none;
+        }
+        .bio-link:hover::before,
+        .bio-link:focus-visible::before { transform: scaleX(1); }
+        .bio-link:hover .bio-icon,
+        .bio-link:hover .bio-name,
+        .bio-link:hover .bio-handle,
+        .bio-link:hover .bio-arrow,
+        .bio-link:focus-visible .bio-icon,
+        .bio-link:focus-visible .bio-name,
+        .bio-link:focus-visible .bio-handle,
+        .bio-link:focus-visible .bio-arrow {
+          color: var(--jungle-deep);
+          opacity: 1;
+        }
+        .bio-link:hover .bio-arrow,
+        .bio-link:focus-visible .bio-arrow {
+          transform: translate(3px, -3px);
+        }
+
+        /* ── Footer ── */
+        .bio-foot {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          margin-top: 8px;
+          padding-top: 28px;
+          border-top: 1px solid rgba(245, 240, 232, 0.1);
+        }
+        .bio-back {
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 11px;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+          color: var(--bone-dim);
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+        .bio-back:hover { color: var(--neon-lime); }
+        .bio-copy {
+          font-family: var(--font-jetbrains), monospace;
+          font-size: 9px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: var(--bone-dim);
+          opacity: 0.45;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .bio-link,
+          .bio-link::before,
+          .bio-arrow { transition: none; }
+        }
+      `}</style>
+    </main>
   );
 }

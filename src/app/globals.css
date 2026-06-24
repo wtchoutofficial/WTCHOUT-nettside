@@ -2,7 +2,7 @@
 
 @theme inline {
   --color-jungle-deep: #050d08;
-  --color-jungle-floor: #0a1a0f;
+  --color-jungle-floor: #0a140d;
   --color-jungle-mid: #1a3a1f;
   --color-jungle-leaf: #2d5a35;
   --color-jungle-light: #4a7a52;
@@ -27,7 +27,7 @@
 
 :root {
   --jungle-deep: #050d08;
-  --jungle-floor: #0a1a0f;
+  --jungle-floor: #0a140d;
   --jungle-mid: #1a3a1f;
   --jungle-leaf: #2d5a35;
   --jungle-light: #4a7a52;
@@ -72,22 +72,6 @@ body {
   .hero-section {
     height: 200vh !important;
     min-height: 200vh !important;
-  }
-}
-
-/* ============ Hero DUSK/DAWN mood panels ============ */
-.hero-mood:hover { opacity: 1 !important; }
-.hero-mood a:hover { text-decoration: underline; }
-@media (max-width: 760px) {
-  .hero-moods {
-    flex-direction: column;
-    align-items: center;
-    gap: 22px !important;
-    bottom: 30px !important;
-  }
-  .hero-mood {
-    text-align: center !important;
-    flex-basis: auto !important;
   }
 }
 
@@ -169,7 +153,7 @@ html[data-mood="dawn"] .hero-stage {
 /* ============ Grain overlay ============ */
 .grain {
   position: fixed; inset: 0; pointer-events: none; z-index: 9000;
-  opacity: 0.07; mix-blend-mode: overlay;
+  opacity: 0.17; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
 }
 
@@ -472,6 +456,10 @@ html[data-mood="dawn"] .hero-stage {
   }
   .section-haze { display: none !important; }
   .vinyl-disc { display: none !important; }
+  /* Hero entrance + scroll-bar loop — drop to resting state. */
+  .wtc-photo-img { transform: scale(1.06) !important; }
+  .wtc-anim { animation: none !important; opacity: 1 !important; filter: none !important; transform: none !important; }
+  .wtc-scroll-bar { animation: none !important; }
   /* Collapse at first paint via CSS only — no JS/data-reduced dependency,
      so reduced-motion users never see the 300vh→100svh reflow. */
   .hero-section,
@@ -480,3 +468,9 @@ html[data-mood="dawn"] .hero-stage {
     min-height: 100svh !important;
   }
 }
+
+/* ============ Hero (design handoff) — entrance + scroll keyframes ============ */
+@keyframes wtcPhoto { from { opacity: 0; transform: scale(1.16); } to { opacity: 1; transform: scale(1.06); } }
+@keyframes wtcUp    { from { opacity: 0; transform: translateY(36px); filter: blur(6px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+@keyframes wtcFade  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wtcScroll{ 0% { transform: translateY(0); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(14px); opacity: 0; } }

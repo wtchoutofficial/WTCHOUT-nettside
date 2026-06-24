@@ -1,199 +1,181 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
-import { useMood } from "@/context/MoodContext";
-import WordmarkDisintegrate from "@/components/home/WordmarkDisintegrate";
+import { useEffect, useRef, type RefObject } from "react";
 
-const HeroCanvas = dynamic(() => import("@/components/three/HeroCanvas"), {
-  ssr: false,
-});
+// Hero — recreated from the design handoff (design_handoff_hero).
+// Full-viewport monochrome portrait on the left melting into pure black on the
+// right, oversized WTCHOUT wordmark over the seam, technical label system, a
+// living film-grain canvas and a subtle mouse-driven parallax diorama.
+// The site's global <Navbar> already provides the top bar, so the handoff's
+// own top bar is intentionally omitted here to avoid a duplicate nav.
+
+const BG = "#070706";
+const FG = "#f2efe9";
+const GRAIN_INTENSITY = 0.07;
+const PARALLAX_STRENGTH = 1;
+const PHOTO_CONTRAST = 1.14;
 
 export default function HeroSection() {
-  const heroRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const kickerRef = useRef<HTMLDivElement>(null);
-  const sublineRef = useRef<HTMLDivElement>(null);
-  const tintRef = useRef<HTMLDivElement>(null);
-  const hintRef = useRef<HTMLDivElement>(null);
-  const panelsRef = useRef<HTMLDivElement>(null);
-  // Written by the RAF loop / pointer listener, read by the 3D camera each
-  // frame — refs so scrolling never triggers React re-renders.
-  const scrollRef = useRef(0);
-  const pointerRef = useRef({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-  const [reduced, setReduced] = useState(false);
-  const [show3D, setShow3D] = useState(false);
-  const { mood, setMood } = useMood();
+  const photoRef = useRef<HTMLDivElement>(null);
+  const ghostRef = useRef<HTMLDivElement>(null);
+  const wordRef = useRef<HTMLDivElement>(null);
+  const seamRef = useRef<HTMLDivElement>(null);
+  const grainRef = useRef<HTMLCanvasElement>(null);
 
+  // ---------- living film grain ----------
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 900px), (pointer: coarse)");
-    const update = () => setIsMobile(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
-
-  // Gate the 3D layer: reduced motion / no WebGL / data-saver all fall back to
-  // the poster. One idle tick before loading so the poster is the LCP, not the
-  // three.js chunk.
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setReduced(true);
-      return;
-    }
-    const probe = document.createElement("canvas");
-    const gl = probe.getContext("webgl2") || probe.getContext("webgl");
-    if (!gl) return;
-    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } })
-      .connection;
-    if (conn?.saveData) return;
-
-    const enable = () => setShow3D(true);
-    if ("requestIdleCallback" in window) {
-      const id = window.requestIdleCallback(enable, { timeout: 200 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const t = setTimeout(enable, 120);
-    return () => clearTimeout(t);
-  }, []);
-
-  // Scroll progress + title/tint/hint choreography (unchanged from the video
-  // era — the same RAF now also feeds the 3D camera via scrollRef).
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero || reduced) return;
-    // Synchronous guard: `reduced` state only flips after the first commit, so
-    // without this the RAF would run for ~1 frame before the effect re-runs.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const cv = grainRef.current;
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
+
+    const buf = document.createElement("canvas");
+    buf.width = buf.height = 150;
+    const bctx = buf.getContext("2d");
+    if (!bctx) return;
+    const img = bctx.createImageData(150, 150);
+
+    const resize = () => {
+      cv.width = window.innerWidth;
+      cv.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
 
     let raf = 0;
-    const tick = () => {
-      const rect = hero.getBoundingClientRect();
-      const total = hero.offsetHeight - window.innerHeight;
-      const p = total > 0 ? Math.max(0, Math.min(1, -rect.top / total)) : 0;
-      scrollRef.current = p;
-
-      if (titleRef.current) {
-        // The wordmark canvas disintegrates itself; here we just lift the whole
-        // title block a touch and fade the small mono lines as it crumbles.
-        const dissolve = Math.max(0, Math.min(1, (p - 0.03) / 0.4));
-        titleRef.current.style.transform = `translate(-50%, calc(-50% - ${dissolve * 24}px)) scale(${1 - p * 0.18})`;
-        const small = String(Math.max(0, 1 - dissolve * 1.5));
-        if (kickerRef.current) kickerRef.current.style.opacity = small;
-        if (sublineRef.current) sublineRef.current.style.opacity = small;
-        if (panelsRef.current) panelsRef.current.style.opacity = small;
+    let last = 0;
+    const tick = (t: number) => {
+      // Re-randomize only ~15fps so the grain "crawls" rather than shimmering.
+      if (t - last > 66) {
+        last = t;
+        const d = img.data;
+        for (let i = 0; i < d.length; i += 4) {
+          d[i] = d[i + 1] = d[i + 2] = 255; // white; only alpha varies
+          d[i + 3] = Math.random() * 255 * GRAIN_INTENSITY;
+        }
+        bctx.putImageData(img, 0, 0);
+        const pat = ctx.createPattern(buf, "repeat");
+        if (pat) {
+          ctx.clearRect(0, 0, cv.width, cv.height);
+          ctx.fillStyle = pat;
+          ctx.fillRect(0, 0, cv.width, cv.height);
+        }
       }
-      if (tintRef.current) {
-        tintRef.current.style.opacity = String(Math.max(0, 1 - p * 1.3));
-      }
-      if (hintRef.current) {
-        hintRef.current.style.opacity = String(Math.max(0, 1 - p * 6));
-      }
-
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [reduced]);
 
-  // Pointer parallax source (desktop only — mobile gets autonomous sway in
-  // the camera rig instead of a gyro permission prompt).
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  // ---------- mouse parallax ----------
   useEffect(() => {
-    if (isMobile || reduced) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const layers: Array<[RefObject<HTMLDivElement | null>, number, number]> = [
+      [photoRef, -9, 0.55],
+      [ghostRef, 30, 0.6],
+      [wordRef, 12, 0.5],
+      [seamRef, 18, 0.4],
+    ];
+
+    let tx = 0;
+    let ty = 0;
+    let cx = 0;
+    let cy = 0;
     const onMove = (e: PointerEvent) => {
-      pointerRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      pointerRef.current.y = (e.clientY / window.innerHeight) * 2 - 1;
+      tx = (e.clientX / window.innerWidth - 0.5) * 2;
+      ty = (e.clientY / window.innerHeight - 0.5) * 2;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
-  }, [isMobile, reduced]);
 
-  const MOODS = [
-    {
-      key: "dusk" as const,
-      name: "DUSK",
-      line: "The warm end — groovy, sun-soaked house.",
-      genres: "House · Afro House · Disco-house · Minimal",
-      track: "VETLE",
-      url: "https://open.spotify.com/track/5vHlkTAnn5vu2sglWlhVhD",
-      accent: "#e89a3c",
-    },
-    {
-      key: "dawn" as const,
-      name: "DAWN",
-      line: "The dark end — raw, late-night rave.",
-      genres: "UK Garage · Hard House · Breaks · Techno",
-      track: "ELSK",
-      url: "https://open.spotify.com/track/7k6nrlQrQzPMA13mPYIIUj",
-      accent: "#4fc2ab",
-    },
-  ];
+    let raf = 0;
+    const s = PARALLAX_STRENGTH;
+    const tick = () => {
+      cx += (tx - cx) * 0.06;
+      cy += (ty - cy) * 0.06;
+      for (const [ref, fx, fyk] of layers) {
+        const el = ref.current;
+        if (el) {
+          el.style.transform = `translate3d(${cx * fx * s}px,${cy * fx * fyk * s}px,0)`;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, []);
+
+  const insetRight = "clamp(20px, 4.5vw, 68px)";
+  const mono = "var(--font-space-mono), monospace";
+  const wordSize = "clamp(56px, 12vw, 210px)";
 
   return (
     <section
       id="hero"
-      ref={heroRef}
-      className="hero-section"
-      data-reduced={reduced || undefined}
       style={{
         position: "relative",
-        height: "300vh",
-        minHeight: "300vh",
-        background: "#000",
-        overflow: "clip",
+        width: "100%",
+        height: "100svh",
+        minHeight: "620px",
+        background: BG,
+        color: FG,
+        overflow: "hidden",
+        fontFamily: "var(--font-archivo), -apple-system, sans-serif",
       }}
     >
+      {/* PHOTO LAYER (parallax target — counter-moves for depth) */}
       <div
-        className="hero-stage"
+        ref={photoRef}
         style={{
-          position: "sticky",
+          position: "absolute",
           top: 0,
+          bottom: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
-          overflow: "hidden",
+          width: "58%",
+          willChange: "transform",
         }}
       >
-        {/* Dark mood-graded backdrop (no photo) — instant paint + permanent
-            fallback. The 3D scene fades in from this same dark tone, so there's
-            never a video-looking frame. */}
-
-        {/* Real-time jungle — lazy chunk, fades in over the backdrop. */}
-        {show3D && (
-          <HeroCanvas
-            scrollRef={scrollRef}
-            pointerRef={pointerRef}
-            isMobile={isMobile}
-            mood={mood}
-            heroRef={heroRef}
-            onContextLost={() => setShow3D(false)}
-          />
-        )}
-
-        {/* Color grade */}
-        <div
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero/hero-portrait.jpg"
+          alt="WTCHOUT — Oscar André Naas at the decks"
+          className="wtc-photo-img"
+          fetchPriority="high"
           style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.55) 100%), linear-gradient(180deg, rgba(8,15,12,0.15) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.5) 100%)",
-            pointerEvents: "none",
-            mixBlendMode: "multiply",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "34% 40%",
+            filter: `grayscale(1) contrast(${PHOTO_CONTRAST}) brightness(0.82)`,
+            transform: "scale(1.06)",
+            animation: "wtcPhoto 1.8s cubic-bezier(.16,.84,.34,1) both",
           }}
         />
-        {/* Warm tint that fades as you descend */}
+        {/* Horizontal fade to black on the right */}
         <div
-          ref={tintRef}
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse at 50% 30%, rgba(217, 119, 87, 0.15) 0%, transparent 50%)",
-            mixBlendMode: "overlay",
-            pointerEvents: "none",
-            willChange: "opacity",
+              "linear-gradient(90deg, rgba(7,7,6,0) 30%, rgba(7,7,6,.7) 70%, #070706 100%)",
+          }}
+        />
+        {/* Top & bottom fades */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(0deg, #070706 0%, rgba(7,7,6,0) 26%), linear-gradient(180deg, rgba(7,7,6,.55) 0%, rgba(7,7,6,0) 24%)",
           }}
         />
         {/* Vignette */}
@@ -202,199 +184,182 @@ export default function HeroSection() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.85) 100%)",
-            pointerEvents: "none",
+              "radial-gradient(130% 95% at 38% 42%, rgba(0,0,0,0) 42%, rgba(0,0,0,.5) 100%)",
           }}
         />
-        {/* Grain */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence baseFrequency='0.95' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-            mixBlendMode: "overlay",
-            opacity: 0.18,
-            pointerEvents: "none",
-          }}
-        />
+      </div>
 
-        {/* Title */}
-        <div
-          ref={titleRef}
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "42%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            zIndex: 5,
-            willChange: "opacity, transform",
-            mixBlendMode: "screen",
-            pointerEvents: "none",
-          }}
-        >
-          <div
-            ref={kickerRef}
-            style={{
-              fontFamily: "var(--font-jetbrains), monospace",
-              fontSize: "11px",
-              letterSpacing: "0.4em",
-              textTransform: "uppercase",
-              color: "rgba(246,244,239,0.8)",
-              marginBottom: "24px",
-            }}
-          >
-            Oscar André Naas — Hustadvika, NO
-          </div>
-          {/* Visually-hidden heading for SEO / screen readers; the canvas is
-              the visual that disintegrates on scroll. */}
-          <h1
-            style={{
-              position: "absolute",
-              width: 1,
-              height: 1,
-              padding: 0,
-              margin: -1,
-              overflow: "hidden",
-              clip: "rect(0 0 0 0)",
-              whiteSpace: "nowrap",
-              border: 0,
-            }}
-          >
-            WTCHOUT
-          </h1>
-          <WordmarkDisintegrate scrollRef={scrollRef} isMobile={isMobile} />
-          <div
-            ref={sublineRef}
-            style={{
-              fontFamily: "var(--font-jetbrains), monospace",
-              fontSize: "12px",
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              color: "rgba(246,244,239,0.85)",
-              marginTop: "24px",
-            }}
-          >
-            Norwegian house &amp; rave · two moods, one world
-          </div>
-        </div>
+      {/* SEAM LABEL — vertical technical tag */}
+      <div
+        ref={seamRef}
+        className="wtc-anim"
+        style={{
+          position: "absolute",
+          left: "57%",
+          top: "21%",
+          writingMode: "vertical-rl",
+          fontFamily: mono,
+          fontSize: "11px",
+          letterSpacing: "0.34em",
+          color: "rgba(242,239,233,.4)",
+          textTransform: "uppercase",
+          willChange: "transform",
+          animation: "wtcFade 2s .6s both",
+          zIndex: 4,
+        }}
+      >
+        Portrait — 001 / Hustadvika
+      </div>
 
-        {/* DUSK / DAWN identity panels — the dual mood is the hero. Click a
-            side to grade the whole scene; each carries its genres + a track. */}
-        <div
-          ref={panelsRef}
-          className="hero-moods"
+      {/* GHOST WORDMARK — outlined echo, offset +8px right / +9px down */}
+      <div
+        ref={ghostRef}
+        className="wtc-anim"
+        style={{
+          position: "absolute",
+          right: `calc(${insetRight} + 8px)`,
+          bottom: `calc(clamp(120px, 20vh, 230px) + 9px)`,
+          zIndex: 5,
+          willChange: "transform",
+          animation: "wtcFade 2.2s .5s both",
+        }}
+      >
+        <span
           style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: "44px",
-            zIndex: 7,
-            display: "flex",
-            justifyContent: "center",
-            gap: "clamp(24px, 6vw, 90px)",
-            padding: "0 40px",
-            pointerEvents: "auto",
+            display: "block",
+            fontWeight: 900,
+            fontSize: wordSize,
+            lineHeight: 0.82,
+            letterSpacing: "-0.035em",
+            color: "transparent",
+            WebkitTextStroke: "1.1px rgba(200,252,42,.32)",
           }}
         >
-          {MOODS.map((m) => {
-            const activeMood = mood === m.key;
-            return (
-              <button
-                key={m.key}
-                type="button"
-                onClick={() => setMood(m.key)}
-                aria-pressed={activeMood}
-                className="hero-mood"
-                style={{
-                  flex: "0 1 320px",
-                  textAlign: m.key === "dusk" ? "right" : "left",
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                  opacity: activeMood ? 1 : 0.42,
-                  transition: "opacity 0.5s ease",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-anton), sans-serif",
-                    fontSize: "clamp(22px, 2.6vw, 34px)",
-                    letterSpacing: "0.04em",
-                    color: activeMood ? m.accent : "var(--bone)",
-                    transition: "color 0.5s ease",
-                    lineHeight: 1,
-                  }}
-                >
-                  {m.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-bricolage), sans-serif",
-                    fontSize: "13px",
-                    color: "var(--bone-dim)",
-                    marginTop: "8px",
-                    lineHeight: 1.4,
-                    maxWidth: "320px",
-                  }}
-                >
-                  {m.line}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-jetbrains), monospace",
-                    fontSize: "9px",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: "rgba(246,244,239,0.55)",
-                    marginTop: "10px",
-                  }}
-                >
-                  {m.genres}
-                </div>
-                <a
-                  href={m.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    display: "inline-block",
-                    fontFamily: "var(--font-jetbrains), monospace",
-                    fontSize: "10px",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "var(--neon-lime)",
-                    marginTop: "14px",
-                    textDecoration: "none",
-                  }}
-                >
-                  ▶ Listen · {m.track}
-                </a>
-              </button>
-            );
-          })}
-        </div>
+          WTCHOUT
+        </span>
+      </div>
 
-        <div
-          ref={hintRef}
+      {/* SOLID WORDMARK — headline */}
+      <div
+        ref={wordRef}
+        style={{
+          position: "absolute",
+          right: insetRight,
+          bottom: "clamp(120px, 20vh, 230px)",
+          zIndex: 7,
+          willChange: "transform",
+        }}
+      >
+        <h1
+          className="wtc-anim"
           style={{
-            position: "absolute",
-            right: "32px",
-            bottom: "32px",
-            fontFamily: "var(--font-jetbrains), monospace",
+            margin: 0,
+            fontWeight: 900,
+            fontSize: wordSize,
+            lineHeight: 0.82,
+            letterSpacing: "-0.035em",
+            color: FG,
+            textShadow: "0 2px 40px rgba(0,0,0,.55)",
+            animation: "wtcUp 1.2s .45s both",
+          }}
+        >
+          WTCHOUT
+        </h1>
+      </div>
+
+      {/* TAGLINE + NAME */}
+      <div
+        className="wtc-anim"
+        style={{
+          position: "absolute",
+          right: insetRight,
+          bottom: "clamp(76px, 13vh, 150px)",
+          textAlign: "right",
+          zIndex: 7,
+          maxWidth: "560px",
+          animation: "wtcUp 1.2s .62s both",
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            fontSize: "clamp(14px, 1.25vw, 18px)",
+            lineHeight: 1.5,
+            color: "var(--neon-lime)",
+            fontWeight: 400,
+          }}
+        >
+          Raw, late-night house &amp; rave from the west coast of Norway.
+        </p>
+      </div>
+
+      {/* SCROLL INDICATOR (bottom-center) */}
+      <div
+        className="wtc-anim"
+        style={{
+          position: "absolute",
+          left: "50%",
+          bottom: "30px",
+          transform: "translateX(-50%)",
+          zIndex: 7,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "8px",
+          animation: "wtcFade 1.6s 1s both",
+        }}
+      >
+        <span
+          style={{
+            fontFamily: mono,
             fontSize: "10px",
             letterSpacing: "0.3em",
+            color: "rgba(242,239,233,.5)",
             textTransform: "uppercase",
-            color: "rgba(246,244,239,0.6)",
-            zIndex: 6,
-            willChange: "opacity",
           }}
         >
-          scroll ↓︎
-        </div>
+          Scroll
+        </span>
+        <span
+          style={{
+            position: "relative",
+            width: "1px",
+            height: "30px",
+            background: "rgba(242,239,233,.2)",
+            overflow: "hidden",
+          }}
+        >
+          <span
+            className="wtc-scroll-bar"
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "1px",
+              height: "14px",
+              background: "var(--neon-lime)",
+              boxShadow: "0 0 8px rgba(200,252,42,.6)",
+              animation: "wtcScroll 1.8s ease-in-out infinite",
+            }}
+          />
+        </span>
       </div>
+
+      {/* LIVING GRAIN */}
+      <canvas
+        ref={grainRef}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 20,
+          mixBlendMode: "screen",
+          opacity: 0.5,
+        }}
+      />
     </section>
   );
 }
