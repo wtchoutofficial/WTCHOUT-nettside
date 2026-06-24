@@ -5,8 +5,6 @@ const cards = [
     n: "001",
     title: "ID",
     em: "—",
-    blob: "var(--neon-lime)",
-    blobPos: { top: "-40px", right: "-40px" },
   },
 ];
 
@@ -95,8 +93,7 @@ export default function ComingSection() {
                 aspectRatio: "3/4",
                 position: "relative",
                 overflow: "hidden",
-                background:
-                  "linear-gradient(160deg, var(--jungle-mid), var(--jungle-deep))",
+                background: "var(--jungle-deep)",
                 border: "1px solid rgba(245,240,232,0.1)",
                 transitionDelay: `${i * 0.15}s`,
               }}
@@ -109,20 +106,6 @@ export default function ComingSection() {
                   background:
                     "linear-gradient(180deg, rgba(5,13,8,0.72) 0%, rgba(5,13,8,0.15) 30%, rgba(5,13,8,0) 62%)",
                   pointerEvents: "none",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  width: "200px",
-                  height: "200px",
-                  borderRadius: "50%",
-                  filter: "blur(60px)",
-                  opacity: 0.25,
-                  background: c.blob,
-                  animation: `wtc-blob 12s ease-in-out ${-i * 3}s infinite`,
-                  mixBlendMode: "screen",
-                  ...c.blobPos,
                 }}
               />
               <div
