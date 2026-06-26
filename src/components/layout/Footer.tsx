@@ -41,15 +41,15 @@ export default function Footer() {
               <FooterLink href="https://music.apple.com/no/artist/wtchout/1474091682">
                 Apple Music ↗︎
               </FooterLink>
-              <FooterLink href="https://soundcloud.com/wtchoutofficial">SoundCloud ↗︎</FooterLink>
+              <FooterLink href="https://soundcloud.com/wtchoutmusic">SoundCloud ↗︎</FooterLink>
               <FooterLink href="https://www.beatport.com/artist/wtchout/819182">Beatport ↗︎</FooterLink>
             </ul>
           </div>
           <div>
             <h5 style={h5Style}>— Follow</h5>
             <ul style={listStyle}>
-              <FooterLink href="https://www.instagram.com/wtchoutmusic">Instagram ↗︎</FooterLink>
-              <FooterLink href="https://www.facebook.com/wtchoutofficial">Facebook ↗︎</FooterLink>
+              <FooterLink href="https://www.instagram.com/wtchout.no">Instagram ↗︎</FooterLink>
+              <FooterLink href="https://www.facebook.com/wtchoutmusic">Facebook ↗︎</FooterLink>
               <FooterLink href="https://www.tiktok.com/@wtchoutmusic">TikTok ↗︎</FooterLink>
               <FooterLink href="https://www.youtube.com/@wtchoutmusic">YouTube ↗︎</FooterLink>
             </ul>

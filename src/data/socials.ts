@@ -17,12 +17,12 @@ export const socials: SocialLink[] = [
   },
   {
     name: "Instagram",
-    url: "https://www.instagram.com/wtchoutmusic",
+    url: "https://www.instagram.com/wtchout.no",
     icon: "instagram",
   },
   {
     name: "Facebook",
-    url: "https://www.facebook.com/wtchoutofficial",
+    url: "https://www.facebook.com/wtchoutmusic",
     icon: "facebook",
   },
 ];
@@ -63,9 +63,9 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "SoundCloud",
-        url: "https://soundcloud.com/wtchoutofficial",
+        url: "https://soundcloud.com/wtchoutmusic",
         icon: "soundcloud",
-        handle: "@wtchoutofficial",
+        handle: "@wtchoutmusic",
       },
       {
         name: "Beatport",
@@ -81,9 +81,9 @@ export const linkGroups: LinkGroup[] = [
     items: [
       {
         name: "Instagram",
-        url: "https://www.instagram.com/wtchoutmusic",
+        url: "https://www.instagram.com/wtchout.no",
         icon: "instagram",
-        handle: "@wtchoutmusic",
+        handle: "@wtchout.no",
       },
       {
         name: "TikTok",
@@ -99,9 +99,9 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "Facebook",
-        url: "https://www.facebook.com/wtchoutofficial",
+        url: "https://www.facebook.com/wtchoutmusic",
         icon: "facebook",
-        handle: "wtchoutofficial",
+        handle: "wtchoutmusic",
       },
     ],
   },

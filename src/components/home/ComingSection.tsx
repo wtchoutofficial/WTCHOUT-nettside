@@ -1,4 +1,5 @@
 import Soundwaves from "./Soundwaves";
+import NewsletterSignup from "./NewsletterSignup";
 
 const cards = [
   {
@@ -98,7 +99,7 @@ export default function ComingSection() {
                 transitionDelay: `${i * 0.15}s`,
               }}
             >
-              <Soundwaves />
+              <Soundwaves audioSrc="/audio/id-preview.mp3" previewSeconds={15} />
               <div
                 style={{
                   position: "absolute",
@@ -191,6 +192,7 @@ export default function ComingSection() {
             >
               — Stay close. It drops when it&apos;s ready.
             </div>
+            <NewsletterSignup />
           </div>
         </div>
       </div>
