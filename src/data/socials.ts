@@ -87,9 +87,9 @@ export const linkGroups: LinkGroup[] = [
       },
       {
         name: "TikTok",
-        url: "https://www.tiktok.com/@wtchoutmusic",
+        url: "https://www.tiktok.com/@wtchout",
         icon: "tiktok",
-        handle: "@wtchoutmusic",
+        handle: "@wtchout",
       },
       {
         name: "YouTube",

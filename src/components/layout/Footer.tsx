@@ -50,7 +50,7 @@ export default function Footer() {
             <ul style={listStyle}>
               <FooterLink href="https://www.instagram.com/wtchout.no">Instagram ↗︎</FooterLink>
               <FooterLink href="https://www.facebook.com/wtchoutmusic">Facebook ↗︎</FooterLink>
-              <FooterLink href="https://www.tiktok.com/@wtchoutmusic">TikTok ↗︎</FooterLink>
+              <FooterLink href="https://www.tiktok.com/@wtchout">TikTok ↗︎</FooterLink>
               <FooterLink href="https://www.youtube.com/@wtchoutmusic">YouTube ↗︎</FooterLink>
             </ul>
           </div>
