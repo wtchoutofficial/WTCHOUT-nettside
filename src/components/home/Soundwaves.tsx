@@ -21,7 +21,7 @@ export default function Soundwaves({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const toggleRef = useRef<(() => void) | null>(null);
   const [playing, setPlaying] = useState(false);
-  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -56,12 +56,16 @@ export default function Soundwaves({
     let data: Uint8Array<ArrayBuffer> | null = null;
     let level = 0; // smoothed 0..1 loudness, drives amplitude + brightness
 
+    // Touch devices (mobile) skip the Web Audio graph entirely: routing the
+    // element through createMediaElementSource + a suspended AudioContext is a
+    // common cause of silent playback on iOS. There we just play the plain
+    // element (no wave-reactivity, but reliable sound).
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+
     if (audioSrc) {
       audio = new Audio(audioSrc);
       audio.preload = "auto";
-      audio.crossOrigin = "anonymous";
-      const onCanPlay = () => setReady(true);
-      const onError = () => setReady(false);
+      const onError = () => setFailed(true);
       const onTime = () => {
         if (audio && audio.currentTime >= previewSeconds) {
           audio.pause();
@@ -70,37 +74,43 @@ export default function Soundwaves({
         }
       };
       const onEnded = () => setPlaying(false);
-      audio.addEventListener("canplaythrough", onCanPlay);
-      audio.addEventListener("loadeddata", onCanPlay);
       audio.addEventListener("error", onError);
       audio.addEventListener("timeupdate", onTime);
       audio.addEventListener("ended", onEnded);
 
-      toggleRef.current = async () => {
+      // Sync toggle: play() is called directly inside the tap gesture (no await
+      // before it) so iOS accepts it as user-initiated.
+      toggleRef.current = () => {
         const a = audio;
         if (!a) return;
-        if (!audioCtx) {
-          const AC =
-            window.AudioContext ||
-            (window as unknown as { webkitAudioContext: typeof AudioContext })
-              .webkitAudioContext;
-          audioCtx = new AC();
-          const node = audioCtx.createMediaElementSource(a);
-          analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 256;
-          data = new Uint8Array(new ArrayBuffer(analyser.fftSize));
-          node.connect(analyser);
-          analyser.connect(audioCtx.destination);
-        }
-        await audioCtx.resume();
-        if (a.paused) {
-          a.currentTime = 0;
-          await a.play().catch(() => {});
-          setPlaying(true);
-        } else {
+        if (!a.paused) {
           a.pause();
           setPlaying(false);
+          return;
         }
+        // Desktop only: set up the analyser for the audio-reactive mesh.
+        if (!isTouch && !audioCtx) {
+          try {
+            const AC =
+              window.AudioContext ||
+              (window as unknown as { webkitAudioContext: typeof AudioContext })
+                .webkitAudioContext;
+            audioCtx = new AC();
+            const node = audioCtx.createMediaElementSource(a);
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            data = new Uint8Array(new ArrayBuffer(analyser.fftSize));
+            node.connect(analyser);
+            analyser.connect(audioCtx.destination);
+          } catch {
+            audioCtx = null;
+            analyser = null;
+          }
+        }
+        audioCtx?.resume();
+        a.currentTime = 0;
+        setPlaying(true);
+        a.play().catch(() => setPlaying(false));
       };
     }
 
@@ -196,7 +206,7 @@ export default function Soundwaves({
         }}
       />
 
-      {audioSrc && ready && (
+      {audioSrc && !failed && (
         <button
           type="button"
           onClick={() => toggleRef.current?.()}

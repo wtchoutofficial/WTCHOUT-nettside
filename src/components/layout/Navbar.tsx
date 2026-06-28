@@ -66,6 +66,28 @@ export default function Navbar() {
     };
   }, []);
 
+  // Keep the URL clean (no #hash). On load, honour a deep-link hash by scrolling
+  // to it, then strip it so the address bar reads just "/". The active section
+  // is shown by the nav highlight instead of the URL.
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const el = document.getElementById(window.location.hash.slice(1));
+    requestAnimationFrame(() => {
+      el?.scrollIntoView({ block: "start" });
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
+    });
+  }, []);
+
+  // Smooth-scroll in-page nav links without writing a #hash to the URL.
+  const scrollToSection = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   // Standalone link-in-bio page renders its own chrome.
   if (pathname === "/links") return null;
 
@@ -115,6 +137,7 @@ export default function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
+                onClick={(e) => scrollToSection(e, l.id)}
                 className={`nav-link${activeId === l.id ? " is-active" : ""}`}
               >
                 {l.label}
@@ -189,7 +212,10 @@ export default function Navbar() {
               <a
                 key={l.href}
                 href={l.href}
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  scrollToSection(e, l.id);
+                  setOpen(false);
+                }}
                 style={mobileStyle}
               >
                 {l.label}
