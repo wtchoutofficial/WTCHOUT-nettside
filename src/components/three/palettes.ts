@@ -1,18 +1,18 @@
 import * as THREE from "three";
 
 // Brand grading (from the art direction brief):
-// acid #C0FC24 · DUSK ember #C04A1E / amber #E89A3C · DAWN deep teal #14534A
+// acid #ef7d38 · DUSK ember #C04A1E / amber #E89A3C · DAWN deep teal #14534A
 export const DUSK = {
   fog: new THREE.Color("#2b1c10"),
   leaf: new THREE.Color("#16240f"),
-  shaft: new THREE.Color("#c0fc24").lerp(new THREE.Color("#e89a3c"), 0.2),
+  shaft: new THREE.Color("#ef7d38").lerp(new THREE.Color("#e89a3c"), 0.2),
   dust: new THREE.Color("#e8c97a"),
 };
 
 export const DAWN = {
   fog: new THREE.Color("#0c2823"),
   leaf: new THREE.Color("#0c1f1c"),
-  shaft: new THREE.Color("#c0fc24").lerp(new THREE.Color("#14534a"), 0.2),
+  shaft: new THREE.Color("#ef7d38").lerp(new THREE.Color("#14534a"), 0.2),
   dust: new THREE.Color("#bfe9dd"),
 };
 

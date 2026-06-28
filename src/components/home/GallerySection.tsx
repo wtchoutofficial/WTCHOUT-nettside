@@ -84,7 +84,7 @@ export default function GallerySection() {
 
         <div className="gallery-grid reveal">
           {tiles.map((t, i) => (
-            <figure key={t.src} className="g-tile">
+            <figure key={t.src} className="g-tile" data-theme="dark">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={t.src} alt={t.cap} loading="lazy" />
               <figcaption className="g-cap">
@@ -123,7 +123,7 @@ export default function GallerySection() {
           right: 0;
           bottom: 0;
           padding: 32px 20px 18px;
-          background: linear-gradient(180deg, transparent 0%, rgba(5,13,8,0.85) 70%);
+          background: linear-gradient(180deg, transparent 0%, rgba(var(--deep-rgb),0.85) 70%);
           font-family: var(--font-jetbrains), monospace;
           font-size: 11px;
           letter-spacing: 0.25em;

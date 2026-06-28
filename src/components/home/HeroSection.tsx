@@ -232,7 +232,7 @@ export default function HeroSection() {
             lineHeight: 0.82,
             letterSpacing: "-0.035em",
             color: "transparent",
-            WebkitTextStroke: "1.1px rgba(200,252,42,.32)",
+            WebkitTextStroke: "1.1px rgba(239,125,56,.32)",
           }}
         >
           WTCHOUT
@@ -338,7 +338,7 @@ export default function HeroSection() {
               width: "1px",
               height: "14px",
               background: "var(--neon-lime)",
-              boxShadow: "0 0 8px rgba(200,252,42,.6)",
+              boxShadow: "0 0 8px rgba(239,125,56,.6)",
               animation: "wtcScroll 1.8s ease-in-out infinite",
             }}
           />

@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 type NavLink = {
   href: string;
@@ -27,6 +27,9 @@ export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string>("hero");
+  // The nav floats over the dark hero at the top and over (possibly light)
+  // content below — track which so its ink can adapt without a blend mode.
+  const [overDark, setOverDark] = useState(true);
 
   useEffect(() => {
     const ids = ["hero", ...links.map((l) => l.id)];
@@ -35,7 +38,12 @@ export default function Navbar() {
       .filter((el): el is HTMLElement => Boolean(el));
     if (!sections.length) return;
 
+    const heroEl = document.getElementById("hero");
+
     const compute = () => {
+      setOverDark(
+        !heroEl || window.scrollY < heroEl.offsetHeight - 72,
+      );
       // Pick the section whose midpoint is closest to viewport top + 30%.
       const anchor = window.scrollY + window.innerHeight * 0.3;
       let bestId = sections[0].id;
@@ -95,14 +103,19 @@ export default function Navbar() {
     <>
       <nav
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-6 py-5 md:px-8"
-        style={{
-          fontFamily: "var(--font-jetbrains), monospace",
-          fontSize: "12px",
-          letterSpacing: "0.1em",
-          textTransform: "uppercase",
-          mixBlendMode: "difference",
-          color: "var(--bone)",
-        }}
+        style={
+          {
+            fontFamily: "var(--font-jetbrains), monospace",
+            fontSize: "12px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "var(--nav-ink)",
+            "--nav-ink": overDark ? "#f5f0e8" : "var(--bone)",
+            "--nav-ink-dim": overDark
+              ? "rgba(245,240,232,0.55)"
+              : "rgba(var(--bone-dim-rgb),0.55)",
+          } as React.CSSProperties
+        }
       >
         <Link
           href="/"
@@ -115,12 +128,22 @@ export default function Navbar() {
             }
           }}
         >
-          <Image
-            src="/images/branding/w-logo.png"
-            alt="WTCHOUT"
-            width={26}
-            height={26}
-            style={{ filter: "brightness(0) invert(1)", height: "26px", width: "auto" }}
+          <span
+            aria-hidden="true"
+            style={{
+              display: "inline-block",
+              width: "26px",
+              height: "26px",
+              background: "var(--nav-ink)",
+              WebkitMaskImage: "url(/images/branding/w-logo.png)",
+              maskImage: "url(/images/branding/w-logo.png)",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+            }}
           />
           <span style={{ fontSize: "19px", fontWeight: 800, letterSpacing: "0.03em" }}>
             WTCHOUT
@@ -146,8 +169,8 @@ export default function Navbar() {
           )}
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
-          <span className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          <span className="hidden md:flex items-center gap-2">
             <span
               className="inline-block w-1.5 h-1.5 rounded-full"
               style={{
@@ -158,26 +181,28 @@ export default function Navbar() {
             />
             EST 2019 · NORWAY
           </span>
-        </div>
 
-        <button
-          className="lg:hidden"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle menu"
-          style={{
-            color: "var(--bone)",
-            padding: "8px 12px",
-            border: "1px solid rgba(245,240,232,0.2)",
-            borderRadius: 0,
-            fontFamily: "var(--font-jetbrains), monospace",
-            fontSize: "11px",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            minHeight: "40px",
-          }}
-        >
-          {open ? "Close" : "Menu"}
-        </button>
+          <ThemeToggle />
+
+          <button
+            className="lg:hidden"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle menu"
+            style={{
+              color: "var(--nav-ink)",
+              padding: "8px 12px",
+              border: "1px solid var(--nav-ink-dim)",
+              borderRadius: 0,
+              fontFamily: "var(--font-jetbrains), monospace",
+              fontSize: "11px",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              minHeight: "40px",
+            }}
+          >
+            {open ? "Close" : "Menu"}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
@@ -185,7 +210,7 @@ export default function Navbar() {
         <div
           className="fixed inset-0 z-[99] lg:hidden flex flex-col items-start justify-center gap-5 px-12"
           style={{
-            background: "rgba(5, 13, 8, 0.97)",
+            background: "rgba(var(--deep-rgb), 0.97)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
           }}

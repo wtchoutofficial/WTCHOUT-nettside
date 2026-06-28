@@ -88,8 +88,8 @@ export default function TourSection() {
           <div
             className="reveal"
             style={{
-              borderTop: "1px solid rgba(245,240,232,0.15)",
-              borderBottom: "1px solid rgba(245,240,232,0.15)",
+              borderTop: "1px solid rgba(var(--bone-rgb),0.15)",
+              borderBottom: "1px solid rgba(var(--bone-rgb),0.15)",
               padding: "100px 24px",
               display: "flex",
               flexDirection: "column",
@@ -154,7 +154,7 @@ export default function TourSection() {
                 alignItems: "center",
                 gap: "12px",
                 background: "var(--neon-lime)",
-                color: "var(--jungle-deep)",
+                color: "var(--on-accent)",
                 padding: "18px 32px",
                 fontFamily: "var(--font-anton), sans-serif",
                 fontSize: "22px",
@@ -167,7 +167,7 @@ export default function TourSection() {
             </a>
           </div>
         ) : (
-          <div style={{ borderTop: "1px solid rgba(245,240,232,0.15)" }}>
+          <div style={{ borderTop: "1px solid rgba(var(--bone-rgb),0.15)" }}>
           {dates.map((r, i) => (
             <a
               key={`${r.date}-${r.venue}`}
@@ -178,7 +178,7 @@ export default function TourSection() {
                 alignItems: "center",
                 gap: "24px",
                 padding: "32px 8px",
-                borderBottom: "1px solid rgba(245,240,232,0.15)",
+                borderBottom: "1px solid rgba(var(--bone-rgb),0.15)",
                 opacity: r.sold ? 0.45 : 1,
                 transitionDelay: `${i * 0.05}s`,
               }}

@@ -30,7 +30,7 @@ const FRAG = /* glsl */ `
   varying vec2 vUv;
   varying float vSeed;
 
-  const vec3 ACID = vec3(0.753, 0.988, 0.141); // #C0FC24
+  const vec3 ACID = vec3(0.937, 0.490, 0.220); // #ff6a1a
 
   float ripple(float x) {
     return sin(x) * 0.5 + sin(x * 2.7 + 1.3) * 0.25;

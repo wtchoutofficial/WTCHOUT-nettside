@@ -46,7 +46,7 @@ export function ReleaseCard({ release }: ReleaseCardProps) {
               rotateY: -6,
               filter: "brightness(1.08)",
               boxShadow:
-                "0 0 0 1px rgba(192,252,36,0.55), 0 12px 34px rgba(192,252,36,0.22)",
+                "0 0 0 1px rgba(239,125,56,0.55), 0 12px 34px rgba(239,125,56,0.22)",
             }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.4, ease: "easeOut" }}

@@ -133,7 +133,7 @@ export default function AboutSection() {
                   letterSpacing: "0.3em",
                   textTransform: "uppercase",
                   color: "var(--neon-lime)",
-                  background: "rgba(5,13,8,0.55)",
+                  background: "rgba(var(--deep-rgb),0.55)",
                   padding: "6px 10px",
                   backdropFilter: "blur(6px)",
                 }}
@@ -148,7 +148,7 @@ export default function AboutSection() {
                   bottom: 0,
                   padding: "20px 20px 18px",
                   background:
-                    "linear-gradient(180deg, transparent 0%, rgba(5,13,8,0.85) 70%)",
+                    "linear-gradient(180deg, transparent 0%, rgba(var(--deep-rgb),0.85) 70%)",
                   fontFamily: "var(--font-jetbrains), monospace",
                   fontSize: "10px",
                   letterSpacing: "0.25em",
@@ -169,8 +169,8 @@ export default function AboutSection() {
         <div
           className="reveal"
           style={{
-            borderTop: "1px solid rgba(245,240,232,0.15)",
-            borderBottom: "1px solid rgba(245,240,232,0.15)",
+            borderTop: "1px solid rgba(var(--bone-rgb),0.15)",
+            borderBottom: "1px solid rgba(var(--bone-rgb),0.15)",
             padding: "60px 0",
             textAlign: "center",
             marginBottom: "120px",
@@ -219,7 +219,7 @@ export default function AboutSection() {
             <div
               key={s.l}
               style={{
-                borderLeft: "1px solid rgba(245,240,232,0.15)",
+                borderLeft: "1px solid rgba(var(--bone-rgb),0.15)",
                 padding: "12px 0 12px 24px",
               }}
             >
@@ -266,7 +266,7 @@ export default function AboutSection() {
             display: "grid",
             gridTemplateColumns: "minmax(0, 1fr)",
             gap: 0,
-            border: "1px solid rgba(245,240,232,0.15)",
+            border: "1px solid rgba(var(--bone-rgb),0.15)",
           }}
         >
           <SidePanel kind="dusk" />
@@ -355,23 +355,24 @@ function SidePanel({ kind }: { kind: "dusk" | "dawn" }) {
       objectPosition: "left center",
       flip: true,
       overlay:
-        "linear-gradient(160deg, rgba(10,26,15,0.5) 0%, rgba(5,13,8,0.82) 65%, rgba(2,6,3,0.95) 100%)",
+        "linear-gradient(160deg, rgba(10,26,15,0.5) 0%, rgba(var(--deep-rgb),0.82) 65%, rgba(2,6,3,0.95) 100%)",
       // Extra fade: black out the parrot bleed on the left side of the dawn panel.
       sideFade:
-        "linear-gradient(to right, var(--jungle-deep) 0%, var(--jungle-deep) 35%, rgba(5,13,8,0.7) 60%, transparent 90%)",
+        "linear-gradient(to right, var(--jungle-deep) 0%, var(--jungle-deep) 35%, rgba(var(--deep-rgb),0.7) 60%, transparent 90%)",
     },
   }[kind];
 
   return (
     <div
       className={`side-${kind}`}
+      data-theme="dark"
       style={{
         padding: "60px 32px",
         position: "relative",
         overflow: "hidden",
         minHeight: "520px",
         background: "var(--jungle-deep)",
-        borderRight: cfg.borderRight ? "1px solid rgba(245,240,232,0.1)" : undefined,
+        borderRight: cfg.borderRight ? "1px solid rgba(var(--bone-rgb),0.1)" : undefined,
       }}
     >
       {/* Mirrored image — parrot on dusk side, tiger eye on dawn side */}
@@ -460,7 +461,7 @@ function SidePanel({ kind }: { kind: "dusk" | "dawn" }) {
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               padding: "8px 14px",
-              border: "1px solid rgba(245,240,232,0.25)",
+              border: "1px solid rgba(var(--bone-rgb),0.25)",
               color: "var(--bone)",
               transition: "all .25s",
             }}

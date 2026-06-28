@@ -17,13 +17,14 @@ export default function Marquee({
     <div
       style={{
         overflow: "hidden",
-        borderTop: "1px solid rgba(245,240,232,0.1)",
-        borderBottom: "1px solid rgba(245,240,232,0.1)",
+        borderTop: "1px solid rgba(var(--bone-rgb),0.1)",
+        borderBottom: "1px solid rgba(var(--bone-rgb),0.1)",
         background: "var(--jungle-deep)",
         padding: "22px 0",
       }}
     >
       <div
+        className={muted ? "marquee-muted" : undefined}
         style={{
           display: "flex",
           gap: "60px",
@@ -32,8 +33,7 @@ export default function Marquee({
           fontFamily: "var(--font-anton), sans-serif",
           fontSize: muted ? "clamp(28px, 4vw, 56px)" : "clamp(36px, 5vw, 72px)",
           textTransform: "uppercase",
-          color: muted ? "transparent" : "var(--bone)",
-          WebkitTextStroke: muted ? "1px var(--bone-dim)" : undefined,
+          color: muted ? undefined : "var(--bone)",
           letterSpacing: "-0.02em",
           lineHeight: 1,
           width: "max-content",

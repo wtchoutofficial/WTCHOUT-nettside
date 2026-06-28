@@ -99,7 +99,7 @@ export default function Footer() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            borderTop: "1px solid rgba(245,240,232,0.15)",
+            borderTop: "1px solid rgba(var(--bone-rgb),0.15)",
             paddingTop: "32px",
             fontFamily: "var(--font-jetbrains), monospace",
             fontSize: "11px",
@@ -153,7 +153,7 @@ export default function Footer() {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 32px;
-          border-top: 1px solid rgba(245,240,232,0.15);
+          border-top: 1px solid rgba(var(--bone-rgb),0.15);
           padding-top: 40px;
           margin-bottom: 80px;
         }

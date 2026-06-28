@@ -115,7 +115,7 @@ export default function NewsletterSignup() {
     textTransform: "uppercase",
     color: "var(--neon-lime)",
     background: "transparent",
-    border: "1px solid rgba(200,252,42,0.4)",
+    border: "1px solid rgba(239,125,56,0.4)",
     padding: "10px 16px",
     cursor: "none",
     textDecoration: "none",
@@ -157,7 +157,7 @@ export default function NewsletterSignup() {
             style={{
               ...shareBtnStyle,
               background: "var(--neon-lime)",
-              color: "var(--jungle-deep)",
+              color: "var(--on-accent)",
               borderColor: "var(--neon-lime)",
             }}
           >
@@ -181,7 +181,7 @@ export default function NewsletterSignup() {
           width: 100%;
           background: transparent;
           border: 0;
-          border-bottom: 1px solid rgba(245,240,232,0.25);
+          border-bottom: 1px solid rgba(var(--bone-rgb),0.25);
           color: var(--bone);
           font-family: var(--font-bricolage), sans-serif;
           font-size: 18px;
@@ -190,14 +190,14 @@ export default function NewsletterSignup() {
           transition: border-color .25s;
         }
         .nl input.nl-email::placeholder {
-          color: rgba(216,210,196,0.4);
+          color: rgba(var(--bone-dim-rgb),0.4);
           font-family: var(--font-instrument-serif), serif;
           font-style: italic;
         }
         .nl input.nl-email:focus { border-bottom-color: var(--neon-lime); }
         .nl button.nl-join {
           background: var(--neon-lime);
-          color: var(--jungle-deep);
+          color: var(--on-accent);
           border: 0;
           font-family: var(--font-anton), sans-serif;
           font-size: 18px;

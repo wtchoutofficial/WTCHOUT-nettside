@@ -147,7 +147,7 @@ function renderEmail(opts: {
       (r) => `
         <tr>
           <td style="padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.08);width:38%;vertical-align:top;font-family:${FONT_MONO};font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#666;">${r.label}</td>
-          <td style="padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.08);font-family:${FONT_BODY};font-size:15px;color:#1a1a1a;line-height:1.5;">${r.href ? `<a href="${r.href}" style="color:#1a1a1a;text-decoration:underline;text-decoration-color:#c8ff2a;text-decoration-thickness:2px;text-underline-offset:3px;">${r.value}</a>` : r.value}</td>
+          <td style="padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.08);font-family:${FONT_BODY};font-size:15px;color:#1a1a1a;line-height:1.5;">${r.href ? `<a href="${r.href}" style="color:#1a1a1a;text-decoration:underline;text-decoration-color:#ef7d38;text-decoration-thickness:2px;text-underline-offset:3px;">${r.value}</a>` : r.value}</td>
         </tr>`,
     )
     .join("");
@@ -163,7 +163,7 @@ function renderEmail(opts: {
     .join("");
 
   const subtitleHtml = opts.subtitle
-    ? `<div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#c8ff2a;margin-top:18px;">— ${opts.subtitle} —</div>`
+    ? `<div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#ef7d38;margin-top:18px;">— ${opts.subtitle} —</div>`
     : "";
 
   return `
@@ -182,7 +182,7 @@ function renderEmail(opts: {
             <!-- HERO -->
             <tr>
               <td style="background:#050d08;padding:56px 40px 48px;border-radius:2px;">
-                <div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#c8ff2a;">— ${opts.kicker} —</div>
+                <div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#ef7d38;">— ${opts.kicker} —</div>
                 <div style="font-family:${FONT_DISPLAY};font-size:64px;line-height:0.9;font-weight:900;letter-spacing:-0.04em;text-transform:uppercase;color:#f5f0e8;margin-top:24px;">${opts.title}</div>
                 ${subtitleHtml}
               </td>
@@ -205,7 +205,7 @@ function renderEmail(opts: {
                   Sent via wtchoutmusic.com<br/>
                   Reply directly — goes to the sender
                 </div>
-                <div style="font-family:${FONT_MONO};font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#c8ff2a;margin-top:18px;">— Norwegian house &amp; rave —</div>
+                <div style="font-family:${FONT_MONO};font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#ef7d38;margin-top:18px;">— Norwegian house &amp; rave —</div>
               </td>
             </tr>
           </table>
@@ -348,7 +348,7 @@ function buildConfirmationEmail(opts: {
             <!-- HERO -->
             <tr>
               <td style="background:#050d08;padding:56px 40px 48px;border-radius:2px;">
-                <div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#c8ff2a;">— ${copy.kicker} —</div>
+                <div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#ef7d38;">— ${copy.kicker} —</div>
                 <div style="font-family:${FONT_DISPLAY};font-size:80px;line-height:0.9;font-weight:900;letter-spacing:-0.04em;text-transform:uppercase;color:#f5f0e8;margin-top:24px;">${copy.headline}</div>
                 <div style="font-family:${FONT_MONO};font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#d8d2c4;margin-top:18px;">— ${fname} —</div>
               </td>
@@ -368,7 +368,7 @@ function buildConfirmationEmail(opts: {
                   Hustadvika · Norway<br/>
                   <a href="https://wtchoutmusic.com" style="color:#d8d2c4;text-decoration:none;">wtchoutmusic.com</a>
                 </div>
-                <div style="font-family:${FONT_MONO};font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#c8ff2a;margin-top:18px;">— Norwegian house &amp; rave —</div>
+                <div style="font-family:${FONT_MONO};font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:#ef7d38;margin-top:18px;">— Norwegian house &amp; rave —</div>
               </td>
             </tr>
           </table>

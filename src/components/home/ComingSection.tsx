@@ -90,12 +90,13 @@ export default function ComingSection() {
             <div
               key={c.n}
               className="coming-card reveal"
+              data-theme="dark"
               style={{
                 aspectRatio: "3/4",
                 position: "relative",
                 overflow: "hidden",
                 background: "var(--jungle-deep)",
-                border: "1px solid rgba(245,240,232,0.1)",
+                border: "1px solid rgba(var(--bone-rgb),0.1)",
                 transitionDelay: `${i * 0.15}s`,
               }}
             >
@@ -105,7 +106,7 @@ export default function ComingSection() {
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(180deg, rgba(5,13,8,0.72) 0%, rgba(5,13,8,0.15) 30%, rgba(5,13,8,0) 62%)",
+                    "linear-gradient(180deg, rgba(var(--deep-rgb),0.72) 0%, rgba(var(--deep-rgb),0.15) 30%, rgba(var(--deep-rgb),0) 62%)",
                   pointerEvents: "none",
                 }}
               />
@@ -182,7 +183,7 @@ export default function ComingSection() {
               style={{
                 marginTop: "28px",
                 paddingTop: "20px",
-                borderTop: "1px solid rgba(245,240,232,0.15)",
+                borderTop: "1px solid rgba(var(--bone-rgb),0.15)",
                 fontFamily: "var(--font-jetbrains), monospace",
                 fontSize: "11px",
                 letterSpacing: "0.25em",

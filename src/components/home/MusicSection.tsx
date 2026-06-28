@@ -93,7 +93,7 @@ export default function MusicSection() {
           </p>
         </div>
 
-        <div style={{ borderTop: "1px solid rgba(245,240,232,0.15)" }}>
+        <div style={{ borderTop: "1px solid rgba(var(--bone-rgb),0.15)" }}>
           {releases.map((r, i) => {
             const side = SIDES[r.slug] ?? "Dawn";
             return (
@@ -109,7 +109,7 @@ export default function MusicSection() {
                   alignItems: "center",
                   gap: "32px",
                   padding: "28px 8px",
-                  borderBottom: "1px solid rgba(245,240,232,0.15)",
+                  borderBottom: "1px solid rgba(var(--bone-rgb),0.15)",
                   position: "relative",
                   transitionDelay: `${i * 0.05}s`,
                 }}

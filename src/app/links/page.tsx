@@ -54,7 +54,7 @@ const platformIcons: Record<string, React.ReactNode> = {
 
 export default function LinksPage() {
   return (
-    <main className="bio-page">
+    <main className="bio-page" data-theme="dark">
       {/* DUSK → DAWN atmosphere */}
       <div className="bio-glow bio-glow--dusk" aria-hidden="true" />
       <div className="bio-glow bio-glow--dawn" aria-hidden="true" />
@@ -228,7 +228,7 @@ export default function LinksPage() {
           transition: filter 0.4s ease;
         }
         .bio-wordmark:hover {
-          filter: drop-shadow(0 0 22px rgba(200, 255, 42, 0.35));
+          filter: drop-shadow(0 0 22px rgba(239,125,56, 0.35));
         }
         .bio-coords {
           font-family: var(--font-jetbrains), monospace;
@@ -307,8 +307,8 @@ export default function LinksPage() {
           gap: 14px;
           padding: 15px 18px;
           border-radius: 14px;
-          border: 1px solid rgba(245, 240, 232, 0.1);
-          background: rgba(245, 240, 232, 0.03);
+          border: 1px solid rgba(var(--bone-rgb), 0.1);
+          background: rgba(var(--bone-rgb), 0.03);
           color: var(--bone);
           text-decoration: none;
           overflow: hidden;
@@ -388,7 +388,7 @@ export default function LinksPage() {
         .bio-link:focus-visible .bio-name,
         .bio-link:focus-visible .bio-handle,
         .bio-link:focus-visible .bio-arrow {
-          color: var(--jungle-deep);
+          color: var(--on-accent);
           opacity: 1;
         }
         .bio-link:hover .bio-arrow,
@@ -404,7 +404,7 @@ export default function LinksPage() {
           gap: 10px;
           margin-top: 8px;
           padding-top: 28px;
-          border-top: 1px solid rgba(245, 240, 232, 0.1);
+          border-top: 1px solid rgba(var(--bone-rgb), 0.1);
         }
         .bio-back {
           font-family: var(--font-jetbrains), monospace;

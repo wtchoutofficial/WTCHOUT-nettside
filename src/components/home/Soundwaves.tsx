@@ -238,8 +238,8 @@ export default function Soundwaves({
               backdropFilter: "blur(4px)",
               WebkitBackdropFilter: "blur(4px)",
               boxShadow: playing
-                ? "0 0 22px rgba(200,252,42,0.5)"
-                : "0 0 12px rgba(200,252,42,0.25)",
+                ? "0 0 22px rgba(239,125,56,0.5)"
+                : "0 0 12px rgba(239,125,56,0.25)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

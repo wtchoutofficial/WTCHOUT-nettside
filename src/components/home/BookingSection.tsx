@@ -160,9 +160,9 @@ export default function BookingSection() {
                     gap: "20px",
                     alignItems: "flex-start",
                     padding: "20px 0",
-                    borderTop: "1px solid rgba(245,240,232,0.15)",
+                    borderTop: "1px solid rgba(var(--bone-rgb),0.15)",
                     borderBottom:
-                      i === 2 ? "1px solid rgba(245,240,232,0.15)" : undefined,
+                      i === 2 ? "1px solid rgba(var(--bone-rgb),0.15)" : undefined,
                   }}
                 >
                   <div
@@ -210,7 +210,7 @@ export default function BookingSection() {
               className="reveal"
               style={{
                 padding: "60px 32px",
-                border: "1px solid rgba(245,240,232,0.15)",
+                border: "1px solid rgba(var(--bone-rgb),0.15)",
                 fontFamily: "var(--font-bricolage), sans-serif",
               }}
             >
@@ -401,7 +401,7 @@ export default function BookingSection() {
                   disabled={status === "loading"}
                   style={{
                     background: "var(--neon-lime)",
-                    color: "var(--jungle-deep)",
+                    color: "var(--on-accent)",
                     padding: "22px 40px",
                     fontFamily: "var(--font-anton), sans-serif",
                     fontSize: "32px",
@@ -453,7 +453,7 @@ export default function BookingSection() {
           grid-template-columns: 100px 1fr 24px;
           gap: 24px;
           padding: 22px 0;
-          border-bottom: 1px solid rgba(245,240,232,0.15);
+          border-bottom: 1px solid rgba(var(--bone-rgb),0.15);
           align-items: center;
           transition: border-color .25s, background-color .25s;
         }
@@ -468,11 +468,11 @@ export default function BookingSection() {
           text-align: right;
           transition: opacity .25s, color .25s, transform .25s;
         }
-        .form-row:hover { border-bottom-color: rgba(200,255,42,0.5); }
+        .form-row:hover { border-bottom-color: rgba(239,125,56,0.5); }
         .form-row:hover::before { opacity: 1; color: var(--neon-lime); transform: translateX(4px); }
         .form-row:focus-within { border-bottom-color: var(--neon-lime); }
         .form-row:focus-within::before { opacity: 1; color: var(--neon-lime); }
-        .form-row.first { border-top: 1px solid rgba(245,240,232,0.15); }
+        .form-row.first { border-top: 1px solid rgba(var(--bone-rgb),0.15); }
         .form-row.align-top { align-items: start; }
         .form-row label {
           font-family: var(--font-jetbrains), monospace;
@@ -512,7 +512,7 @@ export default function BookingSection() {
           font-style: italic;
           font-weight: 300;
           font-size: 20px;
-          color: rgba(216,210,196,0.4);
+          color: rgba(var(--bone-dim-rgb),0.4);
           text-transform: none;
           letter-spacing: 0;
         }
