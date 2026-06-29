@@ -80,11 +80,16 @@ export async function POST(req: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const segmentId = process.env.RESEND_SEGMENT_ID;
+  // Resend "Segment" (a.k.a. Audience) for the WTCHOUT mailing list. Not a
+  // secret — the API key is what authorises writes. Env vars override.
+  const listId =
+    process.env.RESEND_SEGMENT_ID ||
+    process.env.RESEND_AUDIENCE_ID ||
+    "b5557628-b6f7-4fac-96a4-b2878638359e";
 
   // Dev fallback: with no Resend config, accept locally so the UI / share flow
   // is testable. Production requires real config so signups are never dropped.
-  if (!apiKey || !segmentId) {
+  if (!apiKey || !listId) {
     if (process.env.NODE_ENV !== "production") {
       console.warn("[newsletter] No Resend config — dev fallback accepted:", email);
       return NextResponse.json({ ok: true });
@@ -100,7 +105,7 @@ export async function POST(req: Request) {
     const res = await resend.contacts.create({
       email,
       unsubscribed: false,
-      segments: [{ id: segmentId }],
+      segments: [{ id: listId }],
     });
     // Resend returns an error object (not a throw) on some failures; a contact
     // that already exists is fine — they're on the list either way.
