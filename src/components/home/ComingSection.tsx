@@ -4,8 +4,9 @@ import NewsletterSignup from "./NewsletterSignup";
 const cards = [
   {
     n: "001",
-    title: "ID",
+    title: "DO IT",
     em: "—",
+    out: "17 July 2026",
   },
 ];
 
@@ -81,7 +82,7 @@ export default function ComingSection() {
               lineHeight: 1.4,
             }}
           >
-            One drop loaded for 26.
+One drop. Out 17 July.
           </p>
         </div>
 
@@ -157,6 +158,17 @@ export default function ComingSection() {
                     </em>
                   </div>
                 </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-jetbrains), monospace",
+                    fontSize: "12px",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "var(--neon-lime)",
+                  }}
+                >
+                  Out — {c.out}
+                </div>
               </div>
             </div>
           ))}
@@ -191,8 +203,28 @@ export default function ComingSection() {
                 color: "var(--bone-dim)",
               }}
             >
-              — Stay close. It drops when it&apos;s ready.
+              — Out 17 July 2026. Pre-save it before it lands.
             </div>
+
+            <a
+              href="https://distrokid.com/hyperfollow/wtchout/do-it"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                marginTop: "26px",
+                background: "var(--neon-lime)",
+                color: "var(--on-accent)",
+                fontFamily: "var(--font-anton), sans-serif",
+                fontSize: "20px",
+                letterSpacing: "0.02em",
+                textTransform: "uppercase",
+                padding: "14px 30px",
+              }}
+            >
+              ▶ Pre-save DO IT
+            </a>
+
             <NewsletterSignup />
           </div>
         </div>
