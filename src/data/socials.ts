@@ -50,6 +50,12 @@ export const linkGroups: LinkGroup[] = [
     mood: "dusk",
     items: [
       {
+        name: "Pre-save DO IT",
+        url: "https://distrokid.com/hyperfollow/wtchout/do-it",
+        icon: "spotify",
+        handle: "Out 17 July 2026",
+      },
+      {
         name: "Spotify",
         url: "https://open.spotify.com/artist/6DeWCj9W2OMshT5sdCJnqa",
         icon: "spotify",
