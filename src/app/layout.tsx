@@ -63,23 +63,42 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const OG_IMAGE = {
+  url: "/images/og-hero.jpg",
+  width: 1200,
+  height: 630,
+  alt: "WTCHOUT — Oscar André Naas",
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://wtchoutmusic.com"),
   title: {
     default: "WTCHOUT — Norwegian house & rave",
     template: "%s | WTCHOUT",
   },
   description:
-    "WTCHOUT — Norwegian house & rave producer Oscar André Naas. Two moods, one world: DUSK & DAWN.",
+    "WTCHOUT — Norwegian house & rave producer Oscar André Naas. Raw, late-night house & rave from the west coast of Norway.",
   keywords: ["WTCHOUT", "music", "artist", "electronic", "DJ", "producer", "Norway"],
   icons: {
     icon: "/icon.png",
+    shortcut: "/icon.png",
     apple: "/apple-icon.png",
   },
   openGraph: {
+    type: "website",
+    url: "https://wtchoutmusic.com",
+    siteName: "WTCHOUT",
     title: "WTCHOUT — Norwegian house & rave",
     description:
-      "WTCHOUT — Norwegian house & rave producer Oscar André Naas. Two moods, one world: DUSK & DAWN.",
-    images: ["/images/branding/w-logo.png"],
+      "Raw, late-night house & rave from the west coast of Norway. New single DO IT out 17 July.",
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WTCHOUT — Norwegian house & rave",
+    description:
+      "Raw, late-night house & rave from the west coast of Norway. New single DO IT out 17 July.",
+    images: [OG_IMAGE.url],
   },
 };
 

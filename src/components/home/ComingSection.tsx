@@ -211,7 +211,9 @@ One drop. Out 17 July.
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                display: "inline-block",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
                 marginTop: "26px",
                 background: "var(--neon-lime)",
                 color: "var(--on-accent)",
@@ -222,7 +224,17 @@ One drop. Out 17 July.
                 padding: "14px 30px",
               }}
             >
-              ▶ Pre-save DO IT
+              <svg
+                width="15"
+                height="17"
+                viewBox="0 0 15 17"
+                fill="currentColor"
+                aria-hidden="true"
+                style={{ flexShrink: 0 }}
+              >
+                <path d="M1 1.6a1 1 0 0 1 1.5-.87l11 6.9a1 1 0 0 1 0 1.74l-11 6.9A1 1 0 0 1 1 15.4V1.6Z" />
+              </svg>
+              Pre-save DO IT
             </a>
 
             <NewsletterSignup />
