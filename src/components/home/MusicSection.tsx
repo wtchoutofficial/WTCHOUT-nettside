@@ -2,17 +2,23 @@ import { releases } from "@/data/releases";
 import VinylDisc from "@/components/ui/VinylDisc";
 
 const SIDES: Record<string, "Dawn" | "Dusk"> = {
+  "do-it": "Dusk",
   elsk: "Dawn",
   vetle: "Dusk",
   "right-here": "Dawn",
-  mwaki: "Dusk",
   "that-feeling": "Dawn",
-  "music-is-my-god": "Dusk",
 };
 
 function formatDate(iso: string) {
   const [y, m, d] = iso.split("-");
   return `${d}.${m}.${y}`;
+}
+
+/** A release wears the "New release" tag for its first 30 days. */
+const NEW_RELEASE_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
+
+function isNewRelease(iso: string) {
+  return Date.now() - new Date(iso).getTime() < NEW_RELEASE_WINDOW_MS;
 }
 
 export default function MusicSection() {
@@ -89,7 +95,7 @@ export default function MusicSection() {
               lineHeight: 1.4,
             }}
           >
-            Six singles, two wavelengths. Stream them on every platform that matters.
+            Five singles, two wavelengths. Stream them on every platform that matters.
           </p>
         </div>
 
@@ -160,6 +166,26 @@ export default function MusicSection() {
                   }}
                 >
                   {r.title}
+                  {isNewRelease(r.releaseDate) && (
+                    <span
+                      className="r-new"
+                      style={{
+                        fontFamily: "var(--font-jetbrains), monospace",
+                        fontSize: "11px",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        background: "var(--neon-lime)",
+                        color: "var(--on-accent)",
+                        padding: "5px 10px 4px",
+                        marginLeft: "16px",
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        transform: "translateY(-0.15em)",
+                      }}
+                    >
+                      New release
+                    </span>
+                  )}
                   {r.description && (
                     <span
                       className="r-feat"

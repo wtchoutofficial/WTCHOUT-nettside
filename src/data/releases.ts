@@ -2,12 +2,23 @@ import { Release } from "@/types/music";
 
 export const releases: Release[] = [
   {
+    slug: "do-it",
+    title: "DO IT",
+    type: "single",
+    releaseDate: "2026-07-17",
+    coverImage:
+      "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e020572b63ac276520937797889",
+    spotifyUrl: "https://open.spotify.com/track/2S2sQs1QlLXTKnj9VNynxh",
+    tracks: [{ title: "DO IT", duration: "2:57" }],
+    featured: true,
+  },
+  {
     slug: "elsk",
     title: "ELSK",
     type: "single",
     releaseDate: "2025-06-20",
     coverImage:
-      "https://i.scdn.co/image/ab67616d00001e02eeb0965e2e0995c4fc6577c8",
+      "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e0287eb00e9393704e03ac8cc10",
     spotifyUrl: "https://open.spotify.com/track/7k6nrlQrQzPMA13mPYIIUj",
     tracks: [{ title: "ELSK", duration: "3:58" }],
     featured: true,
@@ -18,7 +29,7 @@ export const releases: Release[] = [
     type: "single",
     releaseDate: "2025-04-11",
     coverImage:
-      "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e0217c4fe309422ddab1dc24496",
+      "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e025a090d8735d9bac2368fc3f3",
     spotifyUrl: "https://open.spotify.com/track/5vHlkTAnn5vu2sglWlhVhD",
     appleMusicUrl: "https://music.apple.com/album/vetle/PLACEHOLDER",
     youtubeMusicUrl: "https://music.youtube.com/watch?v=PLACEHOLDER",
@@ -32,20 +43,9 @@ export const releases: Release[] = [
     type: "single",
     releaseDate: "2025-02-28",
     coverImage:
-      "https://i.scdn.co/image/ab67616d00001e0233c4deed97ed9456dc98dd36",
+      "https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02fc959be49170ad2bbd480411",
     spotifyUrl: "https://open.spotify.com/album/09ktQESm9FTTDC5qTWfp69",
     tracks: [{ title: "Right Here", duration: "4:42" }],
-  },
-  {
-    slug: "mwaki",
-    title: "Mwaki",
-    type: "single",
-    releaseDate: "2024-07-26",
-    coverImage:
-      "https://i.scdn.co/image/ab67616d00001e0201d9514b2ec445b5a11c4cd8",
-    spotifyUrl: "https://open.spotify.com/track/26l3EU3cIIymPIiyjCbDlE",
-    tracks: [{ title: "Mwaki", duration: "4:08" }],
-    description: "feat. Berlux",
   },
   {
     slug: "that-feeling",
@@ -53,18 +53,8 @@ export const releases: Release[] = [
     type: "single",
     releaseDate: "2024-06-14",
     coverImage:
-      "https://i.scdn.co/image/ab67616d00001e02a85bb0592c858b628117d12e",
+      "https://image-cdn-fa.spotifycdn.com/image/ab67616d00001e028890a7972e685b01fa044feb",
     spotifyUrl: "https://open.spotify.com/album/68z0MQSjBPrwi5Y6ri7MlV",
     tracks: [{ title: "That Feeling", duration: "4:07" }],
-  },
-  {
-    slug: "music-is-my-god",
-    title: "Music Is My God",
-    type: "single",
-    releaseDate: "2023-06-23",
-    coverImage:
-      "https://i.scdn.co/image/ab67616d00001e02761d4c59f3cbabc22141231d",
-    spotifyUrl: "https://open.spotify.com/album/5LY7ttQeK2dQAnk7bydToJ",
-    tracks: [{ title: "Music Is My God", duration: "2:51" }],
   },
 ];

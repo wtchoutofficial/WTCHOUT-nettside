@@ -82,7 +82,7 @@ export default function ComingSection() {
               lineHeight: 1.4,
             }}
           >
-One drop. Out 17 July.
+DO IT is out. The next one is already in the machine.
           </p>
         </div>
 
@@ -132,7 +132,7 @@ One drop. Out 17 July.
                       lineHeight: 1.8,
                     }}
                   >
-                    — UPCOMING / {c.n}
+                    — OUT NOW / {c.n}
                   </div>
                   <div
                     style={{
@@ -186,9 +186,9 @@ One drop. Out 17 July.
                 margin: 0,
               }}
             >
-              One track, fully formed —{" "}
+              DO IT just landed —{" "}
               <span style={{ color: "var(--neon-lime)" }}>
-                waiting on the right night to land.
+                loud, raw, and ready for the night.
               </span>
             </p>
             <div
@@ -203,11 +203,11 @@ One drop. Out 17 July.
                 color: "var(--bone-dim)",
               }}
             >
-              — Out 17 July 2026. Pre-save it before it lands.
+              — Out now on every platform. Next drop: TBA.
             </div>
 
             <a
-              href="https://distrokid.com/hyperfollow/wtchout/do-it"
+              href="https://open.spotify.com/track/2S2sQs1QlLXTKnj9VNynxh"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -234,7 +234,7 @@ One drop. Out 17 July.
               >
                 <path d="M1 1.6a1 1 0 0 1 1.5-.87l11 6.9a1 1 0 0 1 0 1.74l-11 6.9A1 1 0 0 1 1 15.4V1.6Z" />
               </svg>
-              Pre-save DO IT
+              Stream DO IT
             </a>
 
             <NewsletterSignup />

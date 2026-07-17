@@ -8,13 +8,16 @@ import BookingSection from "@/components/home/BookingSection";
 import Marquee from "@/components/layout/Marquee";
 import SectionHaze from "@/components/ui/SectionHaze";
 
+// Re-render daily so the time-based "New release" tag expires without a redeploy.
+export const revalidate = 86400;
+
 export default function Home() {
   return (
     <>
       <HeroSection />
       <SectionHaze />
       <Marquee
-        items={["ELSK", "VETLE", "RIGHT HERE", "MWAKI", "THAT FEELING", "MUSIC IS MY GOD"]}
+        items={Array(6).fill("DO IT — OUT NOW")}
       />
       <MusicSection />
       <SectionHaze />

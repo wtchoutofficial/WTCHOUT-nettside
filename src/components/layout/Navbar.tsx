@@ -14,7 +14,7 @@ type NavLink = {
 };
 
 const links: NavLink[] = [
-  { href: "#releases", id: "releases", label: "Releases" },
+  { href: "/music", id: "music", label: "Music", route: true },
   { href: "#coming", id: "coming", label: "Coming" },
   { href: "#about", id: "about", label: "About" },
   { href: "#gallery", id: "gallery", label: "Gallery" },
@@ -36,7 +36,11 @@ export default function Navbar() {
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
-    if (!sections.length) return;
+    if (!sections.length) {
+      // No tracked sections on this page (e.g. /music) — dark backdrop.
+      setOverDark(true);
+      return;
+    }
 
     const heroEl = document.getElementById("hero");
 
@@ -72,23 +76,29 @@ export default function Navbar() {
       window.removeEventListener("scroll", compute);
       window.removeEventListener("resize", compute);
     };
-  }, []);
+  }, [pathname]);
 
-  // Keep the URL clean (no #hash). On load, honour a deep-link hash by scrolling
-  // to it, then strip it so the address bar reads just "/". The active section
-  // is shown by the nav highlight instead of the URL.
+  // Keep the URL clean (no #hash). On load or client navigation (e.g. from
+  // /music via "/#about"), honour a deep-link hash by scrolling to it, then
+  // strip it so the address bar reads just "/". The active section is shown
+  // by the nav highlight instead of the URL.
   useEffect(() => {
     if (!window.location.hash) return;
-    const el = document.getElementById(window.location.hash.slice(1));
-    requestAnimationFrame(() => {
-      el?.scrollIntoView({ block: "start" });
+    const id = window.location.hash.slice(1);
+    // Delay past the router's own post-navigation scroll reset, and jump
+    // instantly — the CSS smooth scroll gets cancelled by the home page's
+    // scroll-linked animations before it reaches the target.
+    const t = setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.offsetTop, behavior: "instant" });
       window.history.replaceState(
         null,
         "",
         window.location.pathname + window.location.search,
       );
-    });
-  }, []);
+    }, 100);
+    return () => clearTimeout(t);
+  }, [pathname]);
 
   // Smooth-scroll in-page nav links without writing a #hash to the URL.
   const scrollToSection = (e: React.MouseEvent, id: string) => {
@@ -153,7 +163,17 @@ export default function Navbar() {
         <div className="hidden lg:flex gap-7">
           {links.map((l) =>
             l.route ? (
-              <Link key={l.href} href={l.href} className="nav-link">
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`nav-link${pathname === l.href ? " is-active" : ""}`}
+              >
+                {l.label}
+              </Link>
+            ) : pathname !== "/" ? (
+              // Off the home page the target sections don't exist — navigate
+              // home with the hash instead of a dead smooth-scroll.
+              <Link key={l.href} href={`/${l.href}`} className="nav-link">
                 {l.label}
               </Link>
             ) : (
@@ -224,10 +244,10 @@ export default function Navbar() {
               letterSpacing: "-0.02em",
               color: "var(--bone)",
             };
-            return l.route ? (
+            return l.route || pathname !== "/" ? (
               <Link
                 key={l.href}
-                href={l.href}
+                href={l.route ? l.href : `/${l.href}`}
                 onClick={() => setOpen(false)}
                 style={mobileStyle}
               >
